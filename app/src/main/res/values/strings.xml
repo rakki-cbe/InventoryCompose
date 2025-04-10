@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">PdfGenerator</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="lorem_ipsum">
+        test
+    </string>
+    <string name="label_company_name">Company Name</string>
+    <string name="label_address">Address</string>
+    <string name="label_phone_number">Phone Number</string>
+    <string name="label_bank_name">Bank name</string>
+    <string name="label_account_number">Account Number</string>
+    <string name="label_ifsc_code">IFSC</string>
+    <string name="label_gst">Gst Number</string>
+    <string name="label_customer_list">Customer List</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_save">Save</string>
+    <string name="button_add">Add</string>
+
+</resources>

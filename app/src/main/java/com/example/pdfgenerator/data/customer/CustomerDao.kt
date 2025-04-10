@@ -1,0 +1,25 @@
+package com.example.pdfgenerator.data.customer
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface CustomerDao {
+    @Query("SELECT * FROM customer")
+    fun getAll(): Flow<List<Customer>>
+
+    @Query("SELECT * FROM customer WHERE custId IN (:custId)")
+    fun loadAllByIds(custId: IntArray): List<Customer>
+
+    @Query("SELECT * FROM customer WHERE company_name LIKE :name")
+    fun findByName(name: String): Customer
+
+    @Insert
+    fun insertAll(vararg users: Customer)
+
+    @Delete
+    fun delete(user: Customer)
+}
