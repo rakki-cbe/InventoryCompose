@@ -60,20 +60,20 @@ class FirstFragment : Fragment() {
             //findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
         GlobalScope.launch {
-            userViewModel.getAllCustomer().collect { it ->
+            /*userViewModel.getAllCustomer().collect { it ->
                 Log.d("Working", "Data collected " + it.size)
-            }
+            }*/
         }
 
     }
 
     private fun createTestPDF() {
 
-        GlobalScope.launch {
+        /*GlobalScope.launch {
             userViewModel.setData().collect { it ->
                 Log.d("Working", "Data Stored " + it)
             }
-        }
+        }*/
         /**Generate Pdf Document**/
         val doc = PdfDocument()
         /**Generate Page Info For The Page**/

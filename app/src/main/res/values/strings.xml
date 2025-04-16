@@ -9,6 +9,12 @@
     <string name="lorem_ipsum">
         test
     </string>
+    <string name="title_home">Enterprise</string>
+    <string name="title_add_branch">Add your branch</string>
+    <string name="title_add_item">Add item to master list</string>
+    <string name="title_add_cutomer">Add your customer</string>
+    <string name="title_addCustomer">Please enter customer details</string>
+    <string name="title_invoice">Please add your items</string>
     <string name="label_company_name">Company Name</string>
     <string name="label_address">Address</string>
     <string name="label_phone_number">Phone Number</string>
@@ -17,8 +23,34 @@
     <string name="label_ifsc_code">IFSC</string>
     <string name="label_gst">Gst Number</string>
     <string name="label_customer_list">Customer List</string>
+    <string name="label_email">Email address</string>
+    <string name="label_select_branch">Select Branch</string>
+    <string name="label_item_name">Item name</string>
+    <string name="label_item_code">Item code</string>
+    <string name="label_item_des">Item description</string>
+    <string name="label_item_sgst">Item SGST</string>
+    <string name="label_item_cgst">Item CGST</string>
+    <string name="label_item_igst">Item IGST</string>
+    <string name="label_quantity">Quantity</string>
+    <string name="label_unit_price">Unit Price</string>
+    <string name="label_unit_discount">Unit Discount</string>
+    <string name="label_sno">S.no</string>
+    <string name="label_item">Item</string>
+    <string name="label_quantity_short">Qty</string>
+    <string name="label_unit_short">Price</string>
+    <string name="label_gst_short">Gst</string>
+    <string name="label_discount_short">Disc</string>
+    <string name="label_total_short">Total</string>
+
     <string name="button_clear">Clear</string>
     <string name="button_save">Save</string>
     <string name="button_add">Add</string>
+    <string name="button_hide">Hide</string>
+    <string name="button_add_invoice">Create Invoice</string>
+    <string name="button_add_new_customer">Add new customer</string>
+    <string name="button_add_new_item">Add new item</string>
+    <string name="button_add_new_branch">Add new branch</string>
+    <string name="label_select_customer">Company name</string>
+    <string name="label_select_item">Item</string>
 
 </resources>

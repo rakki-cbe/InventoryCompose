@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CutomerRepo @Inject constructor( private val customerDao: CustomerDao) {
-    fun getAllCustomer(): Flow<List<Customer>> {
+    fun getAllCustomer(): List<Customer> {
         return customerDao.getAll()
     }
 

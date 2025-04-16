@@ -1,42 +1,43 @@
 package com.example.pdfgenerator.viewmodel
 
-import androidx.activity.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pdfgenerator.UseCaseResult
 import com.example.pdfgenerator.data.RESUTLT_USECASE_SUCCESS
-import com.example.pdfgenerator.data.customer.Customer
 import com.example.pdfgenerator.data.customer.ItemsMasterEntry
-import com.example.pdfgenerator.data.customer.Profile
 import com.example.pdfgenerator.data.usecase.BranchAddUseCase
 import com.example.pdfgenerator.data.usecase.BranchGetUseCase
-import com.example.pdfgenerator.data.usecase.CustomerAddUseCase
-import com.example.pdfgenerator.data.usecase.CustomerGetUseCase
-import com.example.pdfgenerator.extension.filterNull
+import com.example.pdfgenerator.data.usecase.ItemMasterAddUseCase
+import com.example.pdfgenerator.data.usecase.ItemMasterGetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BillerEntryViewModel @Inject constructor(
+class ItemMasterListViewModel @Inject constructor(
+    private val setItemMasterUseCase: ItemMasterAddUseCase
+) : ViewModel() {
 
-):ViewModel() {
     private val _result = MutableStateFlow(UseCaseResult())
     val result = _result.asStateFlow()
-    private val _seletedBranch: MutableStateFlow<Int> = MutableStateFlow(-1)
 
-    fun setSelectedBranch(branchCode: Int) {
-        viewModelScope.launch {
-            _seletedBranch.emit(branchCode)
+
+    fun clearResultData() {
+        _result.value = UseCaseResult()
+    }
+
+    fun saveItemMasterData(item: ItemsMasterEntry) {
+        viewModelScope.launch(Dispatchers.IO) {
+            setItemMasterUseCase.invoke(item).collect {
+                _result.value = UseCaseResult().apply {
+                    resultCode = RESUTLT_USECASE_SUCCESS
+                    isLoading = false
+                }
+            }
         }
     }
 }

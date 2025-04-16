@@ -3,10 +3,20 @@ package com.example.pdfgenerator.di
 import android.content.Context
 import androidx.room.Room
 import com.example.pdfgenerator.data.InventoryDB
+import com.example.pdfgenerator.data.InvoiceItemEntryDao
+import com.example.pdfgenerator.data.InvoiceRepo
+import com.example.pdfgenerator.data.customer.BranchDao
+import com.example.pdfgenerator.data.customer.BranchRepo
 import com.example.pdfgenerator.data.customer.CustomerDao
 import com.example.pdfgenerator.data.customer.CutomerRepo
+import com.example.pdfgenerator.data.customer.ItemMasterEntryRepo
+import com.example.pdfgenerator.data.usecase.BranchAddUseCase
+import com.example.pdfgenerator.data.usecase.BranchGetUseCase
 import com.example.pdfgenerator.data.usecase.CustomerAddUseCase
 import com.example.pdfgenerator.data.usecase.CustomerGetUseCase
+import com.example.pdfgenerator.data.usecase.InvoiceAddUseCase
+import com.example.pdfgenerator.data.usecase.ItemMasterAddUseCase
+import com.example.pdfgenerator.data.usecase.ItemMasterGetUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,12 +37,28 @@ object ApplicationLevelDIModule {
             appContext,
             InventoryDB::class.java,
             "room_database"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Singleton
     @Provides
     fun provideUserDao(db: InventoryDB) = db.customerDao()
+
+    @Singleton
+    @Provides
+    fun provideProfileDao(db: InventoryDB) = db.profileDao()
+
+    @Singleton
+    @Provides
+    fun provideItemMasterEntryDao(db: InventoryDB) = db.itemMasterEntryDao()
+
+    @Singleton
+    @Provides
+    fun provideInvoiceDao(db: InventoryDB) = db.invoiceDao()
+
+    @Singleton
+    @Provides
+    fun provideInvoiceItemEntryDao(db: InventoryDB) = db.invoiceItemDao()
 
 }
 
@@ -43,8 +69,38 @@ object ActivityComponent {
     fun getCustomerRepo(customerDao: CustomerDao) = CutomerRepo(customerDao)
 
     @Provides
+    fun getBranchRepo(customerDao: BranchDao) = BranchRepo(customerDao)
+
+    @Provides
     fun customerSaveUseCase(customerRepo:CutomerRepo):CustomerAddUseCase = CustomerAddUseCase(customerRepo)
 
     @Provides
     fun getCustomerUseCase(customerRepo:CutomerRepo):CustomerGetUseCase = CustomerGetUseCase(customerRepo)
+
+    @Provides
+    fun brachSaveUseCase(branchRepo: BranchRepo): BranchAddUseCase = BranchAddUseCase(branchRepo)
+
+    @Provides
+    fun getBranchUseCase(branchRepo: BranchRepo): BranchGetUseCase = BranchGetUseCase(branchRepo)
+
+    @Provides
+    fun itemSaveUseCase(itemMasterEntryRepo: ItemMasterEntryRepo) =
+        ItemMasterAddUseCase(itemMasterEntryRepo)
+
+    @Provides
+    fun getItemUseCase(itemMasterEntryRepo: ItemMasterEntryRepo) =
+        ItemMasterGetUseCase(itemMasterEntryRepo)
+
+    @Provides
+    fun addInvoice(
+        itemMasterEntryRepo: ItemMasterEntryRepo,
+        branchRepo: BranchRepo,
+        customerRepo: CutomerRepo,
+        invoiceRepo: InvoiceRepo,
+        itemEntryDao: InvoiceItemEntryDao
+    ) = InvoiceAddUseCase(
+        branchRepo, customerRepo,
+        itemMasterEntryRepo, invoiceRepo, itemEntryDao
+    )
+
 }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CustomerDao {
     @Query("SELECT * FROM customer")
-    fun getAll(): Flow<List<Customer>>
+    fun getAll(): List<Customer>
 
     @Query("SELECT * FROM customer WHERE custId IN (:custId)")
     fun loadAllByIds(custId: IntArray): List<Customer>

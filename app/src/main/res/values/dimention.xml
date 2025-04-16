@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="divider_thick_light">0.5dp</dimen>
+    <dimen name="padding_small">6dp</dimen>
     <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">12dp</dimen>
+
+    <dimen name="card_height_small">100dp</dimen>
+    <dimen name="card_width_large">700dp</dimen>
+    <dimen name="card_height_xxs">40dp</dimen>
 </resources>
