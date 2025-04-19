@@ -1,6 +1,7 @@
-package com.example.pdfgenerator.data.customer
+package com.example.pdfgenerator.data.repository
 
-import kotlinx.coroutines.flow.Flow
+import com.example.pdfgenerator.data.dao.BranchDao
+import com.example.pdfgenerator.data.model.Profile
 import javax.inject.Inject
 
 class BranchRepo @Inject constructor(private val customerDao: BranchDao) {

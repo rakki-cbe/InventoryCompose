@@ -1,11 +1,8 @@
 package com.example.pdfgenerator.data.usecase
 
-import com.example.pdfgenerator.data.customer.Customer
-import com.example.pdfgenerator.data.customer.CutomerRepo
-import kotlinx.coroutines.CoroutineDispatcher
+import com.example.pdfgenerator.data.model.Customer
+import com.example.pdfgenerator.data.repository.CutomerRepo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

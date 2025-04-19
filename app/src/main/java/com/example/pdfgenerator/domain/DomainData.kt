@@ -1,7 +1,7 @@
 package com.example.pdfgenerator.domain
 
-import com.example.pdfgenerator.data.customer.ItemsInventory
-import com.example.pdfgenerator.data.customer.ItemsMasterEntry
+import com.example.pdfgenerator.data.model.ItemsInventory
+import com.example.pdfgenerator.data.model.ItemsMasterEntry
 import com.example.pdfgenerator.extension.convertToDouble
 
 

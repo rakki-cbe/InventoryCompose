@@ -1,4 +1,4 @@
-package com.example.pdfgenerator.ui
+package com.example.pdfgenerator.ui.compose
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

@@ -5,30 +5,20 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.pdfgenerator.data.InventoryDB
-import com.example.pdfgenerator.data.customer.Customer
 import com.example.pdfgenerator.databinding.FragmentFirstBinding
 import com.example.pdfgenerator.databinding.PdfViewSampleBinding
 import com.example.pdfgenerator.viewmodel.BillerEntryViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.Date
-import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -142,7 +132,7 @@ class FirstFragment : Fragment() {
             this.root
         }
 
-    private fun loadBitmapFromView(v: View): Bitmap? {
+    private fun loadBitmapFromView(v: View): Bitmap {
         val specWidth: Int =
             View.MeasureSpec.makeMeasureSpec(PDF_PAGE_WIDTH, View.MeasureSpec.EXACTLY)
         val specHeight: Int =

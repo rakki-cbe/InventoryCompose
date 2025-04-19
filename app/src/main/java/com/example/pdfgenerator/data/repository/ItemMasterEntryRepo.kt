@@ -1,6 +1,7 @@
-package com.example.pdfgenerator.data.customer
+package com.example.pdfgenerator.data.repository
 
-import kotlinx.coroutines.flow.Flow
+import com.example.pdfgenerator.data.dao.ItemMasterEntryDao
+import com.example.pdfgenerator.data.model.ItemsMasterEntry
 import javax.inject.Inject
 
 class ItemMasterEntryRepo @Inject constructor(private val itemMasterEntryDao: ItemMasterEntryDao) {

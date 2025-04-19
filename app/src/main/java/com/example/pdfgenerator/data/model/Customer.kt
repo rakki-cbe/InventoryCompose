@@ -1,4 +1,4 @@
-package com.example.pdfgenerator.data.customer
+package com.example.pdfgenerator.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
