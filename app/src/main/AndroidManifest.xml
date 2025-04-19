@@ -16,7 +16,7 @@
         android:networkSecurityConfig="@xml/network_config"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.user.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.PdfGenerator">
             <intent-filter>
@@ -25,6 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.PdfGenerator"></activity>
     </application>
 
 </manifest>

@@ -15,6 +15,8 @@
     <string name="title_add_cutomer">Add your customer</string>
     <string name="title_addCustomer">Please enter customer details</string>
     <string name="title_invoice">Please add your items</string>
+    <string name="title_Login">Login</string>
+    <string name="title_create_user">Create User</string>
     <string name="label_company_name">Company Name</string>
     <string name="label_address">Address</string>
     <string name="label_phone_number">Phone Number</string>
@@ -41,6 +43,10 @@
     <string name="label_gst_short">Gst</string>
     <string name="label_discount_short">Disc</string>
     <string name="label_total_short">Total</string>
+    <string name="label_user_username">User Name</string>
+    <string name="label_user_password">Password</string>
+    <string name="label_select_customer">Company name</string>
+    <string name="label_select_item">Item</string>
 
     <string name="button_clear">Clear</string>
     <string name="button_save">Save</string>
@@ -50,7 +56,6 @@
     <string name="button_add_new_customer">Add new customer</string>
     <string name="button_add_new_item">Add new item</string>
     <string name="button_add_new_branch">Add new branch</string>
-    <string name="label_select_customer">Company name</string>
-    <string name="label_select_item">Item</string>
+    <string name="button_login">Login</string>
 
 </resources>

@@ -2,11 +2,13 @@ package com.example.pdfgenerator.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.pdfgenerator.data.dao.ActiveUserDao
 import com.example.pdfgenerator.data.dao.BranchDao
 import com.example.pdfgenerator.data.dao.CustomerDao
 import com.example.pdfgenerator.data.dao.InvoiceDao
 import com.example.pdfgenerator.data.dao.InvoiceItemEntryDao
 import com.example.pdfgenerator.data.dao.ItemMasterEntryDao
+import com.example.pdfgenerator.data.model.CurrentUserData
 import com.example.pdfgenerator.data.model.Customer
 import com.example.pdfgenerator.data.model.Inventory
 import com.example.pdfgenerator.data.model.ItemsInventory
@@ -15,7 +17,7 @@ import com.example.pdfgenerator.data.model.Profile
 
 @Database(
     entities = [Profile::class, Customer::class, ItemsMasterEntry::class, Inventory::class,
-        ItemsInventory::class], version = 3
+        ItemsInventory::class, CurrentUserData::class], version = 3
 )
 abstract class InventoryDB: RoomDatabase() {
     abstract fun customerDao(): CustomerDao
@@ -23,5 +25,6 @@ abstract class InventoryDB: RoomDatabase() {
     abstract fun itemMasterEntryDao(): ItemMasterEntryDao
     abstract fun invoiceDao(): InvoiceDao
     abstract fun invoiceItemDao(): InvoiceItemEntryDao
+    abstract fun activeUserDao(): ActiveUserDao
 
 }

@@ -3,6 +3,8 @@ package com.example.pdfgenerator.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pdfgenerator.data.model.Profile
+import com.example.pdfgenerator.data.network.usecase.BranchAddNetworkUseCase
+import com.example.pdfgenerator.data.network.usecase.BranchGetNetworkUseCase
 import com.example.pdfgenerator.data.usecase.BranchAddUseCase
 import com.example.pdfgenerator.ui.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BranchViewModel @Inject constructor(
-    private val branchAddUseCase: BranchAddUseCase
+    private val branchAddUseCase: BranchAddUseCase,
+    private val branchGetNetworkUseCase: BranchGetNetworkUseCase,
+    private val branchAddNetworkUseCase: BranchAddNetworkUseCase
 ) : ViewModel() {
 
 
@@ -34,6 +38,7 @@ class BranchViewModel @Inject constructor(
                 _result.emit(result)
 
             }
+            branchAddNetworkUseCase.invoke(branchDetails)
         }
     }
 }

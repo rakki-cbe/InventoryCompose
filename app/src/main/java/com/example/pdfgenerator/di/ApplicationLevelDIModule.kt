@@ -3,16 +3,18 @@ package com.example.pdfgenerator.di
 import android.content.Context
 import androidx.room.Room
 import com.example.pdfgenerator.data.InventoryDB
+import com.example.pdfgenerator.data.dao.ActiveUserDao
 import com.example.pdfgenerator.data.dao.BranchDao
 import com.example.pdfgenerator.data.dao.CustomerDao
 import com.example.pdfgenerator.data.dao.InvoiceItemEntryDao
-import com.example.pdfgenerator.data.network.BasicAuthInterceptors
 import com.example.pdfgenerator.data.network.ProfileService
+import com.example.pdfgenerator.data.network.UserCredentials
 import com.example.pdfgenerator.data.network.usecase.BranchGetNetworkUseCase
 import com.example.pdfgenerator.data.repository.BranchRepo
 import com.example.pdfgenerator.data.repository.CutomerRepo
 import com.example.pdfgenerator.data.repository.InvoiceRepo
 import com.example.pdfgenerator.data.repository.ItemMasterEntryRepo
+import com.example.pdfgenerator.data.repository.UserCredentialsRepo
 import com.example.pdfgenerator.data.usecase.BranchAddUseCase
 import com.example.pdfgenerator.data.usecase.BranchGetUseCase
 import com.example.pdfgenerator.data.usecase.CustomerAddUseCase
@@ -26,9 +28,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -49,6 +48,11 @@ object ApplicationLevelDIModule {
     @Provides
     fun provideUserDao(db: InventoryDB) = db.customerDao()
 
+
+    @Singleton
+    @Provides
+    fun provideActiveUserData() = UserCredentials()
+
     @Singleton
     @Provides
     fun provideProfileDao(db: InventoryDB) = db.profileDao()
@@ -59,31 +63,15 @@ object ApplicationLevelDIModule {
 
     @Singleton
     @Provides
+    fun provideCredentialsDao(db: InventoryDB) = db.activeUserDao()
+
+    @Singleton
+    @Provides
     fun provideInvoiceDao(db: InventoryDB) = db.invoiceDao()
 
     @Singleton
     @Provides
     fun provideInvoiceItemEntryDao(db: InventoryDB) = db.invoiceItemDao()
-
-    @Provides
-    fun getOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(BasicAuthInterceptors()).build()
-    }
-
-    @Singleton
-    @Provides
-    fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-    }
-
-
-    @Provides
-    fun getProfileNetworkService(retrofit: Retrofit): ProfileService {
-        return retrofit.create(ProfileService::class.java)
-    }
 
 }
 
@@ -95,6 +83,10 @@ object ActivityComponent {
 
     @Provides
     fun getBranchRepo(customerDao: BranchDao) = BranchRepo(customerDao)
+
+    @Provides
+    fun getActiveUserRepo(activeUserDao: ActiveUserDao) =
+        UserCredentialsRepo(activeUserDao)
 
     @Provides
     fun customerSaveUseCase(customerRepo: CutomerRepo): CustomerAddUseCase =
@@ -117,6 +109,7 @@ object ActivityComponent {
     @Provides
     fun getItemUseCase(itemMasterEntryRepo: ItemMasterEntryRepo) =
         ItemMasterGetUseCase(itemMasterEntryRepo)
+
 
     @Provides
     fun addInvoice(
