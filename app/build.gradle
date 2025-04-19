@@ -63,6 +63,11 @@ dependencies {
     //DI
     implementation libs.android.hilt
     kapt libs.android.hilt.compiler
+    //Network
+    implementation libs.android.network.okhttp
+    implementation libs.android.network.retrofit
+    implementation libs.android.network.retrofit.gson
+
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

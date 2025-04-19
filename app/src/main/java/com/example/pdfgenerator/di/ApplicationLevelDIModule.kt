@@ -6,6 +6,9 @@ import com.example.pdfgenerator.data.InventoryDB
 import com.example.pdfgenerator.data.dao.BranchDao
 import com.example.pdfgenerator.data.dao.CustomerDao
 import com.example.pdfgenerator.data.dao.InvoiceItemEntryDao
+import com.example.pdfgenerator.data.network.BasicAuthInterceptors
+import com.example.pdfgenerator.data.network.ProfileService
+import com.example.pdfgenerator.data.network.usecase.BranchGetNetworkUseCase
 import com.example.pdfgenerator.data.repository.BranchRepo
 import com.example.pdfgenerator.data.repository.CutomerRepo
 import com.example.pdfgenerator.data.repository.InvoiceRepo
@@ -23,6 +26,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -58,6 +64,26 @@ object ApplicationLevelDIModule {
     @Singleton
     @Provides
     fun provideInvoiceItemEntryDao(db: InventoryDB) = db.invoiceItemDao()
+
+    @Provides
+    fun getOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder().addInterceptor(BasicAuthInterceptors()).build()
+    }
+
+    @Singleton
+    @Provides
+    fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+    }
+
+
+    @Provides
+    fun getProfileNetworkService(retrofit: Retrofit): ProfileService {
+        return retrofit.create(ProfileService::class.java)
+    }
 
 }
 
@@ -103,5 +129,10 @@ object ActivityComponent {
         branchRepo, customerRepo,
         itemMasterEntryRepo, invoiceRepo, itemEntryDao
     )
+
+
+    @Provides
+    fun getBranchNetworkUseCase(profileService: ProfileService) =
+        BranchGetNetworkUseCase(profileService)
 
 }

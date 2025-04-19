@@ -16,6 +16,8 @@ navigationFragmentKtx = "2.8.8"
 navigationUiKtx = "2.8.8"
 room_version = "2.6.1"
 hiltDi = "2.51.1"
+okhttp = "4.9.1"
+retrofit = "2.9.0"
 
 
 [libraries]
@@ -45,6 +47,10 @@ androidx-room-ktx= { group = "androidx.room", name = "room-ktx", version.ref = "
 androidx-room-annotation= { group = "androidx.room", name = "room-compiler", version.ref = "room_version" }
 android-hilt= { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltDi" }
 android-hilt-compiler= { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltDi" }
+#Network
+android-network-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+android-network-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+android-network-retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
