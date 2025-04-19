@@ -1,4 +1,4 @@
-package com.example.pdfgenerator
+package com.example.pdfgenerator.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,14 +17,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.pdfgenerator.R
 import com.example.pdfgenerator.data.NavigationGraphBiller
-import com.example.pdfgenerator.ui.CustomToolbarScreen
-import com.example.pdfgenerator.ui.addBranchDetailsDialog
-import com.example.pdfgenerator.ui.addCustomerDetails
-import com.example.pdfgenerator.ui.addItemMasterData
-import com.example.pdfgenerator.ui.createInvoice
-import com.example.pdfgenerator.ui.homeScreen
-import com.example.pdfgenerator.ui.loadCustomerList
+import com.example.pdfgenerator.ui.compose.CustomToolbarScreen
+import com.example.pdfgenerator.ui.compose.addBranchDetailsDialog
+import com.example.pdfgenerator.ui.compose.addCustomerDetails
+import com.example.pdfgenerator.ui.compose.addItemMasterData
+import com.example.pdfgenerator.ui.compose.createInvoice
+import com.example.pdfgenerator.ui.compose.homeScreen
 import com.example.pdfgenerator.ui.theme.PdfGeneratorTheme
 import com.example.pdfgenerator.viewmodel.BillerEntryViewModel
 import com.example.pdfgenerator.viewmodel.BranchViewModel
@@ -32,7 +32,6 @@ import com.example.pdfgenerator.viewmodel.CreateInvoiceViewModel
 import com.example.pdfgenerator.viewmodel.CustomerViewModel
 import com.example.pdfgenerator.viewmodel.ItemMasterListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

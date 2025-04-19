@@ -1,7 +1,9 @@
-package com.example.pdfgenerator.data
+package com.example.pdfgenerator.data.model
 
-data class BillerInformation(val custId:String,val customerDetails:CustomerDetails?= null,val date:String,
-                             val invoiceNumber:String,val item:List<Particulars>)
+data class BillerInformation(
+    val custId: String, val customerDetails: CustomerDetails? = null, val date: String,
+    val invoiceNumber: String, val item: List<Particulars>
+)
 
 data class Particulars(val no:Int, val description:String, val quantity:Double,
                        val price:Double,val discount:Double = 0.0)

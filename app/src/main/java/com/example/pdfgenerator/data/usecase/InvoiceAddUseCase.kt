@@ -1,19 +1,16 @@
 package com.example.pdfgenerator.data.usecase
 
-import com.example.pdfgenerator.data.InvoiceItemEntryDao
-import com.example.pdfgenerator.data.InvoiceRepo
-import com.example.pdfgenerator.data.customer.BranchRepo
-import com.example.pdfgenerator.data.customer.Customer
-import com.example.pdfgenerator.data.customer.CutomerRepo
-import com.example.pdfgenerator.data.customer.Inventory
-import com.example.pdfgenerator.data.customer.ItemMasterEntryRepo
-import com.example.pdfgenerator.data.customer.ItemsInventory
-import com.example.pdfgenerator.data.customer.ItemsMasterEntry
-import com.example.pdfgenerator.data.customer.Profile
-import kotlinx.coroutines.CoroutineDispatcher
+import com.example.pdfgenerator.data.dao.InvoiceItemEntryDao
+import com.example.pdfgenerator.data.model.Customer
+import com.example.pdfgenerator.data.model.Inventory
+import com.example.pdfgenerator.data.model.ItemsInventory
+import com.example.pdfgenerator.data.model.ItemsMasterEntry
+import com.example.pdfgenerator.data.model.Profile
+import com.example.pdfgenerator.data.repository.BranchRepo
+import com.example.pdfgenerator.data.repository.CutomerRepo
+import com.example.pdfgenerator.data.repository.InvoiceRepo
+import com.example.pdfgenerator.data.repository.ItemMasterEntryRepo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

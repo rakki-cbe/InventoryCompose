@@ -1,11 +1,10 @@
-package com.example.pdfgenerator.data
+package com.example.pdfgenerator.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.pdfgenerator.data.customer.Inventory
-import kotlinx.coroutines.flow.Flow
+import com.example.pdfgenerator.data.model.Inventory
 
 @Dao
 interface InvoiceDao {

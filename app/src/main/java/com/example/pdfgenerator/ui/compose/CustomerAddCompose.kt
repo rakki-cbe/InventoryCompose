@@ -1,4 +1,4 @@
-package com.example.pdfgenerator.ui
+package com.example.pdfgenerator.ui.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.example.pdfgenerator.R
-import com.example.pdfgenerator.data.customer.Customer
+import com.example.pdfgenerator.data.model.Customer
 import com.example.pdfgenerator.extension.filterNull
 import com.example.pdfgenerator.ui.component.PlainInputText
 import com.example.pdfgenerator.viewmodel.CustomerViewModel

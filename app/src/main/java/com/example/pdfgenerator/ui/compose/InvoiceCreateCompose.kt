@@ -1,4 +1,4 @@
-package com.example.pdfgenerator.ui
+package com.example.pdfgenerator.ui.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll

@@ -3,13 +3,13 @@ package com.example.pdfgenerator.di
 import android.content.Context
 import androidx.room.Room
 import com.example.pdfgenerator.data.InventoryDB
-import com.example.pdfgenerator.data.InvoiceItemEntryDao
-import com.example.pdfgenerator.data.InvoiceRepo
-import com.example.pdfgenerator.data.customer.BranchDao
-import com.example.pdfgenerator.data.customer.BranchRepo
-import com.example.pdfgenerator.data.customer.CustomerDao
-import com.example.pdfgenerator.data.customer.CutomerRepo
-import com.example.pdfgenerator.data.customer.ItemMasterEntryRepo
+import com.example.pdfgenerator.data.dao.BranchDao
+import com.example.pdfgenerator.data.dao.CustomerDao
+import com.example.pdfgenerator.data.dao.InvoiceItemEntryDao
+import com.example.pdfgenerator.data.repository.BranchRepo
+import com.example.pdfgenerator.data.repository.CutomerRepo
+import com.example.pdfgenerator.data.repository.InvoiceRepo
+import com.example.pdfgenerator.data.repository.ItemMasterEntryRepo
 import com.example.pdfgenerator.data.usecase.BranchAddUseCase
 import com.example.pdfgenerator.data.usecase.BranchGetUseCase
 import com.example.pdfgenerator.data.usecase.CustomerAddUseCase
@@ -23,7 +23,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -72,10 +71,12 @@ object ActivityComponent {
     fun getBranchRepo(customerDao: BranchDao) = BranchRepo(customerDao)
 
     @Provides
-    fun customerSaveUseCase(customerRepo:CutomerRepo):CustomerAddUseCase = CustomerAddUseCase(customerRepo)
+    fun customerSaveUseCase(customerRepo: CutomerRepo): CustomerAddUseCase =
+        CustomerAddUseCase(customerRepo)
 
     @Provides
-    fun getCustomerUseCase(customerRepo:CutomerRepo):CustomerGetUseCase = CustomerGetUseCase(customerRepo)
+    fun getCustomerUseCase(customerRepo: CutomerRepo): CustomerGetUseCase =
+        CustomerGetUseCase(customerRepo)
 
     @Provides
     fun brachSaveUseCase(branchRepo: BranchRepo): BranchAddUseCase = BranchAddUseCase(branchRepo)

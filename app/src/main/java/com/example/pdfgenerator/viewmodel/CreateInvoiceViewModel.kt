@@ -2,19 +2,19 @@ package com.example.pdfgenerator.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pdfgenerator.UseCaseResult
 import com.example.pdfgenerator.data.RESUTLT_USECASE_SUCCESS
-import com.example.pdfgenerator.data.customer.Customer
-import com.example.pdfgenerator.data.customer.Inventory
-import com.example.pdfgenerator.data.customer.ItemsInventory
-import com.example.pdfgenerator.data.customer.ItemsMasterEntry
-import com.example.pdfgenerator.data.customer.Profile
+import com.example.pdfgenerator.data.model.Customer
+import com.example.pdfgenerator.data.model.Inventory
+import com.example.pdfgenerator.data.model.ItemsInventory
+import com.example.pdfgenerator.data.model.ItemsMasterEntry
+import com.example.pdfgenerator.data.model.Profile
 import com.example.pdfgenerator.data.usecase.InvoiceAddUseCase
 import com.example.pdfgenerator.domain.InventoryDomainData
 import com.example.pdfgenerator.domain.getInventoryDbData
 import com.example.pdfgenerator.domain.getTotalAmount
 import com.example.pdfgenerator.extension.convertToDouble
 import com.example.pdfgenerator.extension.convertToInt
+import com.example.pdfgenerator.ui.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar
-import java.util.Date
 import javax.inject.Inject
 
 
