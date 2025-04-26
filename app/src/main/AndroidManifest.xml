@@ -32,7 +32,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.pdfgenerator.provider"
+            android:authorities="rakki.sme.invoice.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

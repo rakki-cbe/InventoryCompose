@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.pdfgenerator'
+    namespace 'rakki.sme.invoice'
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.example.pdfgenerator"
+        applicationId "rakki.sme.invoice"
         minSdk 24
         targetSdk 35
         versionCode 1
