@@ -1,13 +1,15 @@
 package com.example.pdfgenerator.data.usecase
 
-import com.example.pdfgenerator.data.dao.InvoiceItemEntryDao
 import com.example.pdfgenerator.data.model.Customer
 import com.example.pdfgenerator.data.model.Inventory
+import com.example.pdfgenerator.data.model.InvoiceLineItemForPrint
+import com.example.pdfgenerator.data.model.InvoiceUserDisplayData
 import com.example.pdfgenerator.data.model.ItemsInventory
 import com.example.pdfgenerator.data.model.ItemsMasterEntry
 import com.example.pdfgenerator.data.model.Profile
 import com.example.pdfgenerator.data.repository.BranchRepo
 import com.example.pdfgenerator.data.repository.CutomerRepo
+import com.example.pdfgenerator.data.repository.InvoiceItemEntryRepo
 import com.example.pdfgenerator.data.repository.InvoiceRepo
 import com.example.pdfgenerator.data.repository.ItemMasterEntryRepo
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +21,7 @@ class InvoiceAddUseCase @Inject constructor(
     val customerRepo: CutomerRepo,
     val itemMasterEntryRepo: ItemMasterEntryRepo,
     val invoiceRepo: InvoiceRepo,
-    val invoiceItemEntryDao: InvoiceItemEntryDao
+    val invoiceItemEntryRepo: InvoiceItemEntryRepo
 ) {
 
 
@@ -35,15 +37,24 @@ class InvoiceAddUseCase @Inject constructor(
         itemMasterEntryRepo.getAllBranch()
     }
 
-    suspend fun saveInventroy(inventory: Inventory, list: List<ItemsInventory>): Boolean =
+    suspend fun saveInventroy(inventory: Inventory, list: List<ItemsInventory>): Long =
         withContext(Dispatchers.IO) {
-            val billerId = invoiceRepo.saveCustomerData(inventory)
+            val billerId = invoiceRepo.saveInvoiceData(inventory)
             list.forEach {
                 it.billerId = billerId
-                invoiceItemEntryDao.insertAll(it)
+                invoiceItemEntryRepo.saveInvoiceLineItem(it)
             }
-            return@withContext true
+            return@withContext billerId
         }
 
+    suspend fun getInvoiceDataForPrinter(billerId: Long): InvoiceUserDisplayData =
+        withContext(Dispatchers.IO) {
+            val invoiceData = invoiceRepo.getInvoiceDataForPrint(billerId)
+            return@withContext invoiceData
+        }
 
+    suspend fun getInvoiceLineItemDataForPrinter(billerId: Long): List<InvoiceLineItemForPrint> =
+        withContext(Dispatchers.IO) {
+            return@withContext invoiceRepo.getInvoiceLineItemForPrint(billerId)
+        }
 }

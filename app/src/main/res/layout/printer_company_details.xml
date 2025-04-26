@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/printer"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8px"
+    android:layout_weight="3"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/company_name"
+        style="@style/printer.biller_title_secondory.bold.red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/printer_padding_medium" />
+
+    <TextView
+        android:id="@+id/company_address"
+        style="@style/printer.biller_title_secondory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/printer_padding_medium"
+        android:maxLines="2"
+        android:padding="@dimen/printer_divider" />
+
+    <TextView
+        android:id="@+id/company_gst"
+        style="@style/printer.biller_title_secondory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/printer_padding_medium"
+        android:maxLines="2" />
+
+    <TextView
+        android:id="@+id/company_phone_number"
+        style="@style/printer.biller_title_secondory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/printer_padding_medium"
+        android:maxLines="2" />
+
+    <TextView
+        android:id="@+id/company_email"
+        style="@style/printer.biller_title_secondory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/printer_padding_medium" />
+</LinearLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="printer">
+        <item name="android:layout_margin">1px</item>
+        <item name="android:padding">1px</item>
+    </style>
+
+    <style name="printer.biller_title">
+        <item name="android:textSize">12px</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="printer.biller_title.bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="printer.biller_title_secondory">
+        <item name="android:textSize">10px</item>
+        <item name="android:layout_margin">1px</item>
+        <item name="android:padding">1px</item>
+    </style>
+
+    <style name="printer.biller_body">
+        <item name="android:textSize">8px</item>
+        <item name="android:layout_margin">1px</item>
+        <item name="android:padding">1px</item>
+    </style>
+
+    <style name="printer.biller_title_secondory.bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="printer.biller_title_secondory.bold.red">
+        <item name="android:textColor">@color/biller_title_red</item>
+    </style>
+
+    <style name="printer.biller_title_secondory.bold.white">
+        <item name="android:textColor">@color/white</item>
+    </style>
+</resources>

@@ -9,9 +9,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ItemMasterAddUseCase @Inject constructor(val itemMasterEntryRepo: ItemMasterEntryRepo) {
-    suspend operator fun invoke(branch: ItemsMasterEntry): Flow<Boolean> =
+    suspend operator fun invoke(itemMasterEntry: ItemsMasterEntry): Flow<Boolean> =
         withContext(Dispatchers.IO) {
-            itemMasterEntryRepo.saveCustomerData(branch)
+            itemMasterEntryRepo.saveMasterItemEntry(itemMasterEntry)
             channelFlow { send(true) }
         }
 }

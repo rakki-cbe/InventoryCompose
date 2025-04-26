@@ -129,3 +129,10 @@ class UseCaseResult {
     var resultCode: Int = 0
     var errorCode: Int = 0
 }
+
+class Response<T> {
+    var isLoading: Boolean = false
+    var resultCode: Int = 0
+    var errorCode: Int = 0
+    var data: T? = null
+}

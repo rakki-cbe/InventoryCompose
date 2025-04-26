@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="25px"
+        android:background="@color/biller_title_red"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <LinearLayout
+            style="@style/printer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="60">
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold.white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:gravity="center"
+                android:text="@string/biller_label_sno" />
+
+            <View
+                style="@style/printer"
+                android:layout_width="@dimen/printer_divider"
+                android:layout_height="wrap_content"
+                android:background="@color/gray" />
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold.white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="35"
+                android:gravity="center"
+                android:text="@string/biller_label_desc" />
+
+            <View
+                style="@style/printer"
+                android:layout_width="@dimen/printer_divider"
+                android:layout_height="wrap_content"
+                android:background="@color/gray" />
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold.white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="15"
+                android:gravity="center"
+                android:text="@string/biller_label_code" />
+        </LinearLayout>
+
+        <View
+            style="@style/printer"
+            android:layout_width="@dimen/printer_divider"
+            android:layout_height="wrap_content"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="50">
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold.white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="14"
+                android:gravity="center"
+                android:text="@string/biller_label_qty" />
+
+            <View
+                style="@style/printer"
+                android:layout_width="@dimen/printer_divider"
+                android:layout_height="wrap_content"
+                android:background="@color/gray" />
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold.white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="18"
+                android:gravity="center"
+                android:text="@string/biller_label_unit_price" />
+
+            <View
+                style="@style/printer"
+                android:layout_width="@dimen/printer_divider"
+                android:layout_height="wrap_content"
+                android:background="@color/gray" />
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold.white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="18"
+                android:gravity="center"
+                android:text="@string/biller_label_total" />
+
+            <View
+                style="@style/printer"
+                android:layout_width="@dimen/printer_divider"
+                android:layout_height="wrap_content"
+                android:background="@color/gray" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!---Content starts -->
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/printer_items_min_height"
+        android:orientation="vertical">
+
+    </LinearLayout>
+    <!---Content ends -->
+    <View
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_divider"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|end"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:gravity="center"
+            android:text="@string/biller_label_total" />
+
+        <TextView
+            android:id="@+id/total_final_amount"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="13"
+            android:gravity="center|end"
+            android:paddingEnd="@dimen/printer_padding_medium"
+            tools:text="2800" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:gravity="center"
+            android:text="@string/biller_label_amount_words" />
+
+        <TextView
+            android:id="@+id/amount_words"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="45"
+            android:gravity="center"
+            tools:text="Two thousand one hundred and twenty four rupees only/-" />
+    </LinearLayout>
+</LinearLayout>

@@ -45,6 +45,8 @@ data class ItemsMasterEntry(
     @ColumnInfo(name = "igst")
     var igst: String = ""
 
+    @ColumnInfo(name = "totalgst")
+    var totalGst: String = ""
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "itemId")
     var itemId: Long = 0
@@ -66,7 +68,7 @@ data class ItemsMasterEntry(
     ]
 )
 data class Inventory(
-    @ColumnInfo(name = "customerId") val companyName: Long,
+    @ColumnInfo(name = "customerId") val companyId: Long,
     @ColumnInfo(name = "profileId") val profileID: Long,
     @ColumnInfo(name = "totalAmount") val totalAmountPaid: String,
     @ColumnInfo(name = "discount") val discount: String,
@@ -93,6 +95,7 @@ data class Inventory(
         )
     ]
 )
+
 data class ItemsInventory(
     @ColumnInfo(name = "itemId") val itemId: Long,
     @ColumnInfo("quantity") val numberOfItem: String,
@@ -102,7 +105,90 @@ data class ItemsInventory(
     @ColumnInfo(name = "billId")
     var billerId: Long = 0
 
+    @ColumnInfo(name = "totalAmountWithOutGst")
+    var totalAmountWithOutGst: String = ""
+
+    @ColumnInfo(name = "totalAmountWithGst")
+    var totalAmountWithGst: String = ""
+
+    @ColumnInfo(name = "totalGstAmount")
+    var totalGstAmount: String = ""
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "itemInventoryId")
     var id: Long = 0
+}
+
+data class InvoiceUserDisplayData(
+    @ColumnInfo(name = "customerId") val companyId: Long,
+    @ColumnInfo(name = "billId") var billId: Int = 0,
+    @ColumnInfo(name = "totalAmount") val totalAmountPaid: String,
+    @ColumnInfo(name = "discount") val discount: String,
+    @ColumnInfo(name = "finalReceivedAmt") val finalAmount: String,
+    @ColumnInfo(name = "date") val date: String
+) {
+    @ColumnInfo(name = "company_name")
+    var companyName: String? = ""
+    @ColumnInfo(name = "address")
+    var address: String? = ""
+    @ColumnInfo(name = "phone_number")
+    var phoneNumber: String? = ""
+    @ColumnInfo(name = "email")
+    var email: String? = ""
+    @ColumnInfo(name = "gst")
+    var gst: String? = ""
+    @ColumnInfo(name = "bank_name")
+    var bankName: String? = ""
+    @ColumnInfo(name = "account_number")
+    var accountNumber: String? = ""
+    @ColumnInfo(name = "ifsc")
+    var ifscCode: String? = ""
+    @ColumnInfo(name = "cust_company_name")
+    var custCompanyName: String? = ""
+    @ColumnInfo(name = "cust_address")
+    var custAddress: String? = ""
+    @ColumnInfo(name = "cust_phone_number")
+    var custPhoneNumber: String? = ""
+    @ColumnInfo(name = "cust_gst")
+    var custGst: String? = ""
+}
+
+data class InvoiceLineItemForPrint(
+    @ColumnInfo(name = "itemId") val itemId: Long,
+    @ColumnInfo("quantity") val numberOfItem: String,
+    @ColumnInfo("unitPrice") val unitPrice: String,
+    @ColumnInfo("discount") val discount: String
+) {
+
+    @ColumnInfo(name = "totalAmountWithOutGst")
+    var totalAmountWithOutGst: String = ""
+
+    @ColumnInfo(name = "totalAmountWithGst")
+    var totalAmountWithGst: String = ""
+
+    @ColumnInfo(name = "totalGstAmount")
+    var totalGstAmount: String = ""
+
+    @ColumnInfo(name = "name")
+    var itemName: String? = ""
+
+    @ColumnInfo(name = "code")
+    var itemCode: String? = ""
+
+    @ColumnInfo(name = "des")
+    var desc: String = ""
+
+    @ColumnInfo(name = "sgst")
+    var sgst: String = ""
+
+    @ColumnInfo(name = "cgst")
+    var cgst: String = ""
+
+    @ColumnInfo(name = "igst")
+    var igst: String = ""
+
+    @ColumnInfo(name = "totalgst")
+    var totalGst: String = ""
+
+
 }

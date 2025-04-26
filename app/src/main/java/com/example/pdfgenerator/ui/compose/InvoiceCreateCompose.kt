@@ -1,5 +1,7 @@
 package com.example.pdfgenerator.ui.compose
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -24,8 +26,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.FileProvider
 import com.example.pdfgenerator.R
 import com.example.pdfgenerator.data.DefaultSelectedItem
 import com.example.pdfgenerator.domain.InventoryDomainData
@@ -33,14 +37,15 @@ import com.example.pdfgenerator.ui.component.DropDown
 import com.example.pdfgenerator.ui.component.DropDownUiData
 import com.example.pdfgenerator.ui.component.NumbersInputText
 import com.example.pdfgenerator.viewmodel.CreateInvoiceViewModel
+import java.io.File
 
 @Composable
 fun createInvoice(
-
     viewModel: CreateInvoiceViewModel,
     modifier: Modifier = Modifier,
     navigation: () -> Unit
 ) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,6 +81,9 @@ fun createInvoice(
         }
         val result = viewModel.result.collectAsState()
         if (result.value.resultCode == 200) {
+            result.value.data?.let {
+                moveToGeneratePDF(context, it)
+            }
             navigation.invoke()
             viewModel.clearResultData()
         }
@@ -193,9 +201,10 @@ fun createInvoice(
             Button(
                 onClick = {
                     viewModel.saveItemMasterData(
-                        tempInventoryItem.value,
-                        selectedProfile.value,
-                        selectedCustomer.value
+                        inventoryDomain = tempInventoryItem.value,
+                        profileId = selectedProfile.value,
+                        customerId = selectedCustomer.value,
+                        context = context
                     )
                 }, modifier = Modifier
                     .fillMaxWidth()
@@ -325,7 +334,7 @@ fun loadInventroyInfo(value: List<InventoryDomainData>, function: () -> Unit) {
                     )
                     VerticalDivider(modifier = Modifier.fillMaxHeight())
                     Text(
-                        it.totalPrice, modifier = Modifier
+                        it.totalAmountWithGstPrice, modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
                     )
@@ -359,5 +368,18 @@ fun dropDownlistComposeInventroy(
         dropDownUi.ignorelast = false
         DropDown(dropDownUi, resetSelection.value)
     }
+}
+
+fun moveToGeneratePDF(context: Context, filePath: String) {
+    val path = FileProvider.getUriForFile(
+        context,
+        "com.example.pdfgenerator.provider",
+        File(filePath)
+    )
+    val pdfIntent = Intent(Intent.ACTION_VIEW)
+    pdfIntent.setDataAndType(path, "application/pdf")
+    pdfIntent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+    pdfIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    context.startActivity(pdfIntent)
 }
 

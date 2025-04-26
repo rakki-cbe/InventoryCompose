@@ -9,7 +9,7 @@ class InvoiceItemEntryRepo @Inject constructor(private val invoiceItemEntryDao: 
         return invoiceItemEntryDao.getAll()
     }
 
-    fun saveCustomerData(item: ItemsInventory) {
+    fun saveInvoiceLineItem(item: ItemsInventory) {
         invoiceItemEntryDao.insertAll(item)
     }
 }

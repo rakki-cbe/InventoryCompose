@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/printer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_item_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/item_no"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:gravity="center"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/desc"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="35"
+            android:gravity="center_vertical|left"
+            tools:text="Face Tissue" />
+
+        <TextView
+            android:id="@+id/code"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:gravity="center"
+            tools:text="48189000" />
+
+        <TextView
+            android:id="@+id/qty"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="@dimen/printer_padding_medium"
+            tools:text="50" />
+
+        <TextView
+            android:id="@+id/price"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="14"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="@dimen/printer_padding_medium"
+            tools:text="36" />
+
+        <TextView
+            android:id="@+id/total_unit_amount"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="14"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="@dimen/printer_padding_medium"
+            tools:text="1800" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_item_height"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <View
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:gravity="center"
+            tools:text="" />
+
+        <TextView
+            android:id="@+id/gst"
+            style="@style/printer.biller_body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="35"
+            android:gravity="center_vertical|left"
+            tools:text="sgst 8%,cgst,8%,igst 8%" />
+
+        <View
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="15"
+            android:gravity="center"
+            tools:text="" />
+
+        <View
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="12"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="@dimen/printer_padding_medium"
+            tools:text="" />
+
+        <View
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="14"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="@dimen/printer_padding_medium" />
+
+        <TextView
+            android:id="@+id/gst_total"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="14"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="@dimen/printer_padding_medium"
+            tools:text="10" />
+    </LinearLayout>
+</LinearLayout>

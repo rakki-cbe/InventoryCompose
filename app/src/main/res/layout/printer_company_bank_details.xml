@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/printer.biller_title_secondory.bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/biller_label_company_bank" />
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center|left"
+            android:text="@string/biller_label_bank_name" />
+
+        <TextView
+            android:id="@+id/company_bank_name"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center|start"
+            tools:text="HDFC" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center|left"
+            android:text="@string/biller_label_bank_account" />
+
+        <TextView
+            android:id="@+id/company_bank_acc"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center|start"
+            tools:text="1234354234" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center|left"
+            android:text="@string/biller_label_bank_ifsc" />
+
+        <TextView
+            android:id="@+id/company_bank_ifsc"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center|start"
+            tools:text="CNRB0001351" />
+    </LinearLayout>
+
+    <View
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_divider"
+        android:background="@color/gray" />
+</LinearLayout>

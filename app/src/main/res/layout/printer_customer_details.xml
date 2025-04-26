@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/printer"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/print_date_section_width"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/company_name"
+            style="@style/printer.biller_title_secondory.bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/printer_padding_medium" />
+
+        <TextView
+            android:id="@+id/company_address"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/printer_padding_medium"
+            android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/company_phone_number"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/printer_padding_medium"
+            android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/company_gst"
+            style="@style/printer.biller_title_secondory.bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/printer_padding_medium"
+            android:maxLines="2" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/printer"
+        android:layout_width="@dimen/printer_divider"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/printer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/biller_label_date" />
+
+            <TextView
+                android:id="@+id/bill_date"
+                style="@style/printer.biller_title_secondory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/printer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/biller_label_invoice_no" />
+
+            <TextView
+                android:id="@+id/bill_id"
+                style="@style/printer.biller_title_secondory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/printer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <TextView
+                style="@style/printer.biller_title_secondory.bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/biller_label_customer_id" />
+
+            <TextView
+                android:id="@+id/company_id"
+                style="@style/printer.biller_title_secondory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

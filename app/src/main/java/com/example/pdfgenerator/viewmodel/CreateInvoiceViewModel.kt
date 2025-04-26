@@ -1,5 +1,6 @@
 package com.example.pdfgenerator.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pdfgenerator.data.RESUTLT_USECASE_SUCCESS
@@ -14,14 +15,17 @@ import com.example.pdfgenerator.domain.getInventoryDbData
 import com.example.pdfgenerator.domain.getTotalAmount
 import com.example.pdfgenerator.extension.convertToDouble
 import com.example.pdfgenerator.extension.convertToInt
-import com.example.pdfgenerator.ui.UseCaseResult
+import com.example.pdfgenerator.ui.Response
+import com.example.pdfgenerator.ui.pdfgenerator.createPDF
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 
@@ -45,7 +49,7 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
         _itemTempInvntoryItem.asStateFlow()
 
 
-    private val _result = MutableStateFlow(UseCaseResult())
+    private val _result = MutableStateFlow(Response<String>())
     val result = _result.asStateFlow()
 
     fun getAllBranch() {
@@ -67,59 +71,79 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
     }
 
     fun clearResultData() {
-        _result.value = UseCaseResult()
+        _result.value = Response<String>()
     }
 
     fun saveItemMasterData(
         inventoryDomain: List<InventoryDomainData>,
         profileId: Long,
-        customerId: Long
+        customerId: Long,
+        context: Context
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val list: List<ItemsInventory> = inventoryDomain.getInventoryDbData()
             val totalAmount = inventoryDomain.getTotalAmount()
             val totalDiscount = 0
             val totalPaidAmount = totalAmount - totalDiscount
-            val date = Calendar.getInstance().toString()
-            invoiceAddUseCase.saveInventroy(
+            val date = getCurrentDateAndTime()
+
+            val id = invoiceAddUseCase.saveInventroy(
                 Inventory(
                     customerId, profileId, totalAmount.toString(),
                     totalDiscount.toString(), totalPaidAmount.toString(), date
                 ), list
             )
-            _result.value = UseCaseResult().apply {
-                resultCode = RESUTLT_USECASE_SUCCESS
-                isLoading = false
-
+            id?.let {
+                val filePath = createPDFForInvoice(context, id)
+                _result.value = Response<String>().apply {
+                    this.data = filePath
+                    this.resultCode = RESUTLT_USECASE_SUCCESS
+                }
             }
         }
+    }
+
+
+    suspend fun createPDFForInvoice(context: Context, billerID: Long): String {
+        val data = invoiceAddUseCase.getInvoiceDataForPrinter(billerID)
+        val lineItem = invoiceAddUseCase.getInvoiceLineItemDataForPrinter(billerID)
+        return createPDF(context, data, lineItem)
     }
 
     fun addTempInventoryItem(item: InventoryDomainData) {
         val list: MutableList<InventoryDomainData> = mutableListOf()
         list.addAll(itemTempInvntoryItem.value)
-        item.totalGstPerecent = calculateTotalGstPercent(item)
-        item.totalPrice = calculateTotalAmount(item)
+        item.totalGstPerecent = item.item?.totalGst?.toDouble() ?: 0.0
+        item.totalAmountWithoutGst = calculateTotalAmount(item)
+        item.totalGstAmount =
+            calculateTotalGstAmount(item.totalGstPerecent, item.totalAmountWithoutGst)
+        item.totalAmountWithGstPrice = (item.totalAmountWithoutGst + item.totalGstAmount).toString()
         list.add(item)
         _itemTempInvntoryItem.value = list.toList()
     }
 
-    private fun calculateTotalGstPercent(inventory: InventoryDomainData): Double {
-        val sgst = inventory.item?.sgst.convertToDouble(0.0)
-        val cgst = inventory.item?.sgst.convertToDouble(0.0)
-        val igst = inventory.item?.sgst.convertToDouble(0.0)
-        return sgst + cgst + igst
+    private fun calculateTotalGstAmount(
+        totalGstPercent: Double,
+        totalAmount: Double
+    ): Double {
+        return if (totalGstPercent > 0)
+            return ((totalGstPercent / 100) * totalAmount)
+        else 0.0
     }
 
-    private fun calculateTotalAmount(item: InventoryDomainData): String {
+    private fun calculateTotalAmount(item: InventoryDomainData): Double {
         val quty = item.numberOfItem.convertToInt(0)
         val unitPrice = item.unitPrice.convertToDouble(0.0)
         val discount = item.discount.convertToDouble(0.0)
-        val total = (quty * (unitPrice - discount))
-        if (item.totalGstPerecent > 0) {
-            return (total + ((item.totalGstPerecent / 100) * total)).toString()
-        }
-        return total.toString()
+        return (quty * (unitPrice - discount))
+
+    }
+
+    fun getCurrentDateAndTime(): String {
+        val c: Date = Calendar.getInstance().time
+        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val formattedDate: String = simpleDateFormat.format(c)
+        return formattedDate
     }
 }
 

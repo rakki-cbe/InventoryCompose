@@ -10,6 +10,4 @@ class BranchGetNetworkUseCase @Inject constructor(val branchRepo: ProfileService
     suspend operator fun invoke(): Profile = withContext(Dispatchers.IO) {
         branchRepo.getProfileForCompany("test")
     }
-
-
 }

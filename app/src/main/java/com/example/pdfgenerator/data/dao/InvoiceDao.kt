@@ -5,6 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.pdfgenerator.data.model.Inventory
+import com.example.pdfgenerator.data.model.InvoiceLineItemForPrint
+import com.example.pdfgenerator.data.model.InvoiceUserDisplayData
 
 @Dao
 interface InvoiceDao {
@@ -25,4 +27,24 @@ interface InvoiceDao {
 
     @Delete
     fun delete(inventory: Inventory)
+
+    @Query(
+        "SELECT " + " inventory.*, " +
+                "Profile.*," +
+                "customer.company_name as cust_company_name," +
+                "customer.address as cust_address," +
+                "customer.phone_number as cust_phone_number," +
+                "customer.gst as cust_gst" +
+                " from inventory,Profile,customer where inventory.billId = :billerId and " +
+                "Profile.profileId = inventory.profileId and customer.custId = inventory.customerId"
+    )
+    fun getInvoiceDataForPrint(billerId: Long): InvoiceUserDisplayData
+
+    @Query(
+        "SELECT itemsmasterentry.*, " +
+                "itemsinventory.*" +
+                " from itemsinventory,itemsmasterentry where ItemsInventory.billId = :billerId and " +
+                "itemsmasterentry.itemId = itemsinventory.itemId"
+    )
+    fun getInvoiceLineItemForPrint(billerId: Long): List<InvoiceLineItemForPrint>
 }

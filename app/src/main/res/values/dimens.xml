@@ -1,3 +1,13 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="print_item_width">595px</dimen>
+    <dimen name="print_date_section_width">100px</dimen>
+    <dimen name="print_logo_size">100px</dimen>
+    <dimen name="print_company_section_size">200px</dimen>
+    <dimen name="printer_divider">0.2px</dimen>
+    <dimen name="printer_padding_medium">8px</dimen>
+    <dimen name="printer_item_height">25px</dimen>
+    <dimen name="printer_items_min_height">175px</dimen>
+    <dimen name="printer_signature_space">100px</dimen>
+
 </resources>

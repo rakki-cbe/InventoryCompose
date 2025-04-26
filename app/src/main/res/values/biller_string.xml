@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="biller_title_invoice">INVOICE</string>
+    <string name="biller_title_invoice_to">INVOICE TO</string>
+    <string name="biller_label_date">Date : </string>
+    <string name="biller_label_invoice_no">Invoice No.   : </string>
+    <string name="biller_label_customer_id">Customer ID : </string>
+    <string name="biller_label_sno">S.No</string>
+    <string name="biller_label_desc">DESCRIPTION</string>
+    <string name="biller_label_code">HSN Code</string>
+    <string name="biller_label_qty">QTY</string>
+    <string name="biller_label_unit_price">UNIT PRICE</string>
+    <string name="biller_label_total">Total</string>
+    <string name="biller_label_amount_words">Amount (in Words )</string>
+    <string name="biller_label_company_bank">Company Bank Details</string>
+    <string name="biller_label_bank_name">Bank Name</string>
+    <string name="biller_label_bank_account">A/C Number</string>
+    <string name="biller_label_bank_ifsc">IFSC Code</string>
+    <string name="biller_label_enterprice_name">"For %1$s"</string>
+    <string name="biller_gst_desc">"CGST : %1$s SGST : %2$s IGST: %3$s"</string>
+    <string name="biller_gst">"GST : %1$s"</string>
+    <string name="biller_phone">"PH : %1$s"</string>
+    <string name="biller_email">"Email : %1$s"</string>
+</resources>

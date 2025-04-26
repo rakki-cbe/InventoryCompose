@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/printer"
+    android:layout_width="@dimen/print_item_width"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bill_borader"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/biller_label_invoice"
+        style="@style/printer.biller_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/biller_title_invoice" />
+
+    <LinearLayout
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <include
+            android:id="@+id/company_details"
+            layout="@layout/printer_company_details" />
+
+        <LinearLayout
+            style="@style/printer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="@dimen/print_logo_size"
+                android:layout_height="@dimen/print_logo_size"
+                android:layout_gravity="right"
+                android:layout_marginEnd="10px"
+                android:src="@drawable/biller_logo"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/biller_label_invoice" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider1"
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_divider"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/invoiceRedTitle"
+        style="@style/printer.biller_title_secondory.bold.red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8px"
+        android:text="@string/biller_title_invoice_to" />
+
+    <View
+        android:id="@+id/divider2"
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_divider"
+        android:background="@color/black" />
+
+    <include
+        android:id="@+id/customer"
+        layout="@layout/printer_customer_details" />
+
+    <View
+        android:id="@+id/divider4"
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_divider"
+        android:background="@color/black" />
+
+    <include
+        android:id="@+id/items"
+        layout="@layout/printer_items_list" />
+
+    <View
+        style="@style/printer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/printer_divider"
+        android:background="@color/black" />
+
+    <include
+        android:id="@+id/customer_bank"
+        layout="@layout/printer_company_bank_details" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|end"
+        android:minHeight="@dimen/printer_signature_space">
+
+        <TextView
+            android:id="@+id/enterpriseName"
+            style="@style/printer.biller_title_secondory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/printer_padding_medium"
+            android:layout_marginHorizontal="8px"
+            tools:text="@string/biller_label_enterprice_name" />
+    </LinearLayout>
+</LinearLayout>

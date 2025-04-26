@@ -1,10 +1,10 @@
 package com.example.pdfgenerator.di
 
-import com.example.pdfgenerator.data.dao.InvoiceItemEntryDao
 import com.example.pdfgenerator.data.network.ProfileService
 import com.example.pdfgenerator.data.network.usecase.BranchGetNetworkUseCase
 import com.example.pdfgenerator.data.repository.BranchRepo
 import com.example.pdfgenerator.data.repository.CutomerRepo
+import com.example.pdfgenerator.data.repository.InvoiceItemEntryRepo
 import com.example.pdfgenerator.data.repository.InvoiceRepo
 import com.example.pdfgenerator.data.repository.ItemMasterEntryRepo
 import com.example.pdfgenerator.data.usecase.BranchAddUseCase
@@ -53,10 +53,10 @@ object UsecaseModule {
         branchRepo: BranchRepo,
         customerRepo: CutomerRepo,
         invoiceRepo: InvoiceRepo,
-        itemEntryDao: InvoiceItemEntryDao
+        invoiceItemEntryRepo: InvoiceItemEntryRepo
     ) = InvoiceAddUseCase(
         branchRepo, customerRepo,
-        itemMasterEntryRepo, invoiceRepo, itemEntryDao
+        itemMasterEntryRepo, invoiceRepo, invoiceItemEntryRepo
     )
 
 
