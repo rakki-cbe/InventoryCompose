@@ -38,7 +38,7 @@ class BranchViewModel @Inject constructor(
                 _result.emit(result)
 
             }
-            branchAddNetworkUseCase.invoke(branchDetails)
+            // branchAddNetworkUseCase.invoke(branchDetails) // TODO Need to host server
         }
     }
 }

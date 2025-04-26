@@ -93,7 +93,7 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
                     totalDiscount.toString(), totalPaidAmount.toString(), date
                 ), list
             )
-            id?.let {
+            id.let {
                 val filePath = createPDFForInvoice(context, id)
                 _result.value = Response<String>().apply {
                     this.data = filePath
@@ -113,7 +113,7 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
     fun addTempInventoryItem(item: InventoryDomainData) {
         val list: MutableList<InventoryDomainData> = mutableListOf()
         list.addAll(itemTempInvntoryItem.value)
-        item.totalGstPerecent = item.item?.totalGst?.toDouble() ?: 0.0
+        item.totalGstPerecent = item.item?.totalGst.convertToDouble(0.0)
         item.totalAmountWithoutGst = calculateTotalAmount(item)
         item.totalGstAmount =
             calculateTotalGstAmount(item.totalGstPerecent, item.totalAmountWithoutGst)

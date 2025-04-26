@@ -4,11 +4,13 @@
     <style name="printer">
         <item name="android:layout_margin">1px</item>
         <item name="android:padding">1px</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="printer.biller_title">
         <item name="android:textSize">12px</item>
         <item name="android:textStyle">bold</item>
+
     </style>
 
     <style name="printer.biller_title.bold">

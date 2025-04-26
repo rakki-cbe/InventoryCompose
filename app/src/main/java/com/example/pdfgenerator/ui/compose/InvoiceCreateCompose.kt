@@ -158,18 +158,20 @@ fun createInvoice(
             )
             Button(
                 onClick = {
-                    viewModel.addTempInventoryItem(
-                        InventoryDomainData(
-                            item = itemslist.value.filter { it.itemId == selecteditem.value }
-                                .firstOrNull(),
-                            numberOfItem = quantity.value,
-                            unitPrice = unitPrice.value,
-                            discount = discount.value
+                    if (tempInventoryItem.value.size < 6) {
+                        viewModel.addTempInventoryItem(
+                            InventoryDomainData(
+                                item = itemslist.value.filter { it.itemId == selecteditem.value }
+                                    .firstOrNull(),
+                                numberOfItem = quantity.value,
+                                unitPrice = unitPrice.value,
+                                discount = discount.value
+                            )
                         )
-                    )
-                    quantity.value = ""
-                    unitPrice.value = ""
-                    discount.value = ""
+                        quantity.value = ""
+                        unitPrice.value = ""
+                        discount.value = ""
+                    }
 
                 }, modifier = Modifier
                     .fillMaxWidth()
