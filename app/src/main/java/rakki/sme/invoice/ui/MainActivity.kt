@@ -42,9 +42,6 @@ class MainActivity : ComponentActivity() {
     val createInvoiceViewModel: CreateInvoiceViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        createInvoiceViewModel.getAllBranch()
-        createInvoiceViewModel.getCustomer()
-        createInvoiceViewModel.getItem()
         enableEdgeToEdge()
         setContent {
             PdfGeneratorTheme {
@@ -99,6 +96,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = NavigationGraphBiller.StartInvoice.name) {
                             title.value = stringResource(R.string.title_invoice)
+                            createInvoiceViewModel.getAllBranch()
+                            createInvoiceViewModel.getCustomer()
+                            createInvoiceViewModel.getItem()
                             createInvoice(
                                 viewModel = createInvoiceViewModel,
                                 navigation = {
