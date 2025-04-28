@@ -20,8 +20,10 @@ import androidx.compose.ui.res.stringResource
 import rakki.sme.invoice.R
 import rakki.sme.invoice.data.model.ItemsMasterEntry
 import rakki.sme.invoice.extension.clear
+import rakki.sme.invoice.extension.convertNullOrEmpty
 import rakki.sme.invoice.extension.filterNull
 import rakki.sme.invoice.ui.component.AmountInputText
+import rakki.sme.invoice.ui.component.InputTextValidation
 import rakki.sme.invoice.ui.component.PlainInputText
 import rakki.sme.invoice.viewmodel.ItemMasterListViewModel
 
@@ -72,17 +74,23 @@ fun addItemMasterData(
             label = R.string.label_item_des,
             itemValue = des
         )
+        val validation = InputTextValidation(maxLength = 5).apply {
+            isPercentage = true
+        }
         AmountInputText(
             label = R.string.label_item_sgst,
-            itemValue = sgst
+            itemValue = sgst,
+            data = validation
         )
         AmountInputText(
             label = R.string.label_item_cgst,
-            itemValue = cgst
+            itemValue = cgst,
+            data = validation
         )
         AmountInputText(
             label = R.string.label_item_igst,
-            itemValue = igst
+            itemValue = igst,
+            data = validation
         )
         Row(
             modifier = Modifier
@@ -115,9 +123,9 @@ fun addItemMasterData(
                                 itemCode = code.value.filterNull()
                             ).apply {
                                 this.desc = des.value.filterNull()
-                                this.sgst = sgst.value.filterNull()
-                                this.cgst = cgst.value.filterNull()
-                                this.igst = igst.value.filterNull()
+                                this.sgst = sgst.value.convertNullOrEmpty("0.0")
+                                this.cgst = cgst.value.convertNullOrEmpty("0.0")
+                                this.igst = igst.value.convertNullOrEmpty("0.0")
                             })
                 }, modifier = Modifier
                     .fillMaxWidth()

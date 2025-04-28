@@ -36,3 +36,11 @@ fun String.isValidAmountDigitOrEmpty(): Boolean {
 
     }
 }
+
+fun String?.convertNullOrEmpty(default: String): String {
+    this?.let {
+        return if (it.isEmpty()) default else this
+    }
+    return default
+
+}

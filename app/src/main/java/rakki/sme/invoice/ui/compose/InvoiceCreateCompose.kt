@@ -33,8 +33,11 @@ import androidx.core.content.FileProvider
 import rakki.sme.invoice.R
 import rakki.sme.invoice.data.DefaultSelectedItem
 import rakki.sme.invoice.domain.InventoryDomainData
+import rakki.sme.invoice.extension.convertNullOrEmpty
+import rakki.sme.invoice.ui.component.AmountInputText
 import rakki.sme.invoice.ui.component.DropDown
 import rakki.sme.invoice.ui.component.DropDownUiData
+import rakki.sme.invoice.ui.component.InputTextValidation
 import rakki.sme.invoice.ui.component.NumbersInputText
 import rakki.sme.invoice.viewmodel.CreateInvoiceViewModel
 import java.io.File
@@ -132,15 +135,18 @@ fun createInvoice(
                 dimensionResource(R.dimen.padding_large)
             )
         ) {
+            val qtyValidation = InputTextValidation(maxLength = 5)
             NumbersInputText(
                 R.string.label_quantity, quantity, modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .weight(1f), data = qtyValidation
             )
-            NumbersInputText(
+            val unitValidation = InputTextValidation(maxLength = 10)
+            AmountInputText(
                 R.string.label_unit_price, unitPrice, modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .weight(1f),
+                data = unitValidation
             )
         }
         Row(
@@ -154,7 +160,8 @@ fun createInvoice(
             NumbersInputText(
                 R.string.label_unit_discount, discount, modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .weight(1f),
+                data = InputTextValidation(maxLength = 6)
             )
             Button(
                 onClick = {
@@ -163,9 +170,9 @@ fun createInvoice(
                             InventoryDomainData(
                                 item = itemslist.value.filter { it.itemId == selecteditem.value }
                                     .firstOrNull(),
-                                numberOfItem = quantity.value,
-                                unitPrice = unitPrice.value,
-                                discount = discount.value
+                                numberOfItem = quantity.value.convertNullOrEmpty("0"),
+                                unitPrice = unitPrice.value.convertNullOrEmpty("0"),
+                                discount = discount.value.convertNullOrEmpty("0")
                             )
                         )
                         quantity.value = ""
@@ -177,7 +184,7 @@ fun createInvoice(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Text(stringResource(R.string.button_save))
+                Text(stringResource(R.string.button_add))
             }
         }
         if (tempInventoryItem.value.isNotEmpty()) {

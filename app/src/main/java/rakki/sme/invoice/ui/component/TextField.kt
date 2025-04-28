@@ -14,12 +14,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.core.text.isDigitsOnly
 import rakki.sme.invoice.R
+import rakki.sme.invoice.extension.convertToDouble
 import rakki.sme.invoice.extension.isValidAmountDigitOrEmpty
 
 @Composable
 fun PlainInputText(
     label: Int, itemValue: MutableState<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier, data: InputTextValidation = InputTextValidation()
 ) {
 
     Box(
@@ -41,7 +42,8 @@ fun PlainInputText(
 @Composable
 fun NumbersInputText(
     label: Int, itemValue: MutableState<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    data: InputTextValidation = InputTextValidation()
 ) {
 
     Box(
@@ -56,7 +58,7 @@ fun NumbersInputText(
                 modifier = modifier.fillMaxWidth()
             )
         }, onValueChange = { it ->
-            if (it.isDigitsOnly())
+                if (checkTextIsValid(it, data, { it.isDigitsOnly() }))
                 itemValue.value = it
         }, keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.NumberPassword
@@ -68,11 +70,12 @@ fun NumbersInputText(
 @Composable
 fun AmountInputText(
     label: Int, itemValue: MutableState<String>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    data: InputTextValidation = InputTextValidation()
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(dimensionResource(R.dimen.padding_medium))
     ) {
@@ -83,12 +86,25 @@ fun AmountInputText(
                 modifier = modifier.fillMaxWidth()
             )
         }, onValueChange = { it ->
-            if (it.isValidAmountDigitOrEmpty())
+                if (checkTextIsValid(it, data, { it.isValidAmountDigitOrEmpty() }))
                 itemValue.value = it
         }, keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number
+                keyboardType = KeyboardType.Decimal
         ), modifier = Modifier.fillMaxWidth()
         )
     }
+}
+
+fun checkTextIsValid(
+    it: String, data: InputTextValidation,
+    fieldSpecificValidation: () -> Boolean
+): Boolean {
+    return if (it.length > data.maxLength && data.maxLength != -1) false
+    else if (data.isPercentage && it.convertToDouble(0.0) > 100.00) false
+    else fieldSpecificValidation.invoke()
+}
+
+data class InputTextValidation(val maxLength: Int = -1) {
+    var isPercentage: Boolean = false
 }
 

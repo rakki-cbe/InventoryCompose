@@ -11,9 +11,9 @@ class ItemMasterEntryRepo @Inject constructor(private val itemMasterEntryDao: It
 
     fun saveMasterItemEntry(item: ItemsMasterEntry) {
         var totalGst = 0.0
-        val cgst = item.cgst.toLong()
-        val sgst = item.sgst.toLong()
-        val igst = item.igst.toLong()
+        val cgst = item.cgst.toDouble()
+        val sgst = item.sgst.toDouble()
+        val igst = item.igst.toDouble()
         if (cgst > 0) totalGst += cgst
         if (sgst > 0) totalGst += sgst
         if (igst > 0) totalGst += igst
