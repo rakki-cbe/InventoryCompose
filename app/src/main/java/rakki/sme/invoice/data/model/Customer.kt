@@ -6,10 +6,11 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity
-data class Customer(@ColumnInfo(name = "company_name") val companyName:String,
-                        @ColumnInfo(name = "address") val address:String,
-                        @ColumnInfo(name = "phone_number") val phoneNumber:String,
-                    @ColumnInfo(name = "gst") val gst: String
+data class Customer(
+    @ColumnInfo(name = "company_name") var companyName: String,
+    @ColumnInfo(name = "address") var address: String,
+    @ColumnInfo(name = "phone_number") var phoneNumber: String,
+    @ColumnInfo(name = "gst") var gst: String
 ) {
     @PrimaryKey(autoGenerate = true)
     var custId: Long = 0

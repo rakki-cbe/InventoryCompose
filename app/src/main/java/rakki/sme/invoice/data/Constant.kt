@@ -3,11 +3,16 @@ package rakki.sme.invoice.data
 enum class NavigationGraphBiller {
     Home,
     CustomerList,
-    CustomerDetails,
     AddCustomer,
     AddNewBranch,
+    BranchList,
+    EditBranch,
     AddNewItem,
+    ItemList,
+    EditItem,
     StartInvoice,
+    EditCustomer,
+    Back,
 }
 
 val RESUTLT_USECASE_SUCCESS = 200

@@ -10,6 +10,7 @@ class BranchRepo @Inject constructor(private val customerDao: BranchDao) {
     }
 
     fun saveCustomerData(branch: Profile) {
-        customerDao.insertAll(branch)
+        if (branch.customerProfileId > 0) customerDao.updateBranch(branch)
+        else customerDao.insertAll(branch)
     }
 }

@@ -10,17 +10,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import rakki.sme.invoice.R
 import rakki.sme.invoice.data.NavigationGraphBiller
-import rakki.sme.invoice.ui.compose.CustomToolbarScreen
+import rakki.sme.invoice.ui.component.CustomToolbarScreen
+import rakki.sme.invoice.ui.compose.ListExitingCustomer
+import rakki.sme.invoice.ui.compose.ListExitingItems
+import rakki.sme.invoice.ui.compose.ListExitingProfile
 import rakki.sme.invoice.ui.compose.addBranchDetailsDialog
 import rakki.sme.invoice.ui.compose.addCustomerDetails
 import rakki.sme.invoice.ui.compose.addItemMasterData
@@ -51,10 +56,12 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf("")
                 }
                 LaunchedEffect(Unit) { state.animateScrollTo(100) }
-                Scaffold(topBar = {
-                    CustomToolbarScreen(navController, title.value)
-                },
-                    modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    topBar = {
+                        CustomToolbarScreen(navController, title.value)
+                    },
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
                     NavHost(
                         modifier = Modifier.padding(innerPadding),
                         navController = navController,
@@ -64,7 +71,7 @@ class MainActivity : ComponentActivity() {
                             title.value = stringResource(R.string.title_home)
                             homeScreen(
                                 billerEntryViewModel = billerEntryViewModel
-                            ) { it ->
+                            ) {
                                 navController.navigate(it)
                             }
                         }
@@ -72,27 +79,94 @@ class MainActivity : ComponentActivity() {
                             title.value = stringResource(R.string.title_add_branch)
                             addBranchDetailsDialog(
                                 viewModel = branchViewModel,
-                                onAdded = {
-                                    navController.popBackStack()
+                                navigation = {
+                                    navigateToScreen(it, navController)
                                 }
                             )
+                        }
+                        composable(route = NavigationGraphBiller.EditBranch.name) {
+                            title.value = stringResource(R.string.title_edit_branch)
+                            val selectedCustomer =
+                                branchViewModel.selectedProfileForEdit.collectAsState()
+                            addBranchDetailsDialog(
+                                viewModel = branchViewModel,
+                                navigation = {
+                                    navigateToScreen(it, navController)
+                                }, item = selectedCustomer.value
+                            )
+                        }
+                        composable(route = NavigationGraphBiller.BranchList.name) {
+                            title.value = stringResource(R.string.title_list_branch)
+                            ListExitingProfile(
+                                viewModel = branchViewModel,
+                                navigation = {
+                                    navigateToScreen(it, navController)
+                                })
                         }
                         composable(route = NavigationGraphBiller.AddNewItem.name) {
                             title.value = stringResource(R.string.title_add_item)
                             addItemMasterData(
                                 viewModel = itemMasterListViewModel,
                                 navigation = {
-                                    navController.popBackStack()
+                                    navigateToScreen(it, navController)
                                 }
                             )
+                        }
+                        composable(route = NavigationGraphBiller.EditItem.name) {
+                            title.value = stringResource(R.string.title_edit_item)
+                            val selectedCustomer =
+                                itemMasterListViewModel.selectedItemForEdit.collectAsState()
+                            addItemMasterData(
+                                viewModel = itemMasterListViewModel,
+                                navigation = {
+                                    if (it == NavigationGraphBiller.Back.name)
+                                        navController.popBackStack()
+                                    else navController.navigate(it)
+                                }, item = selectedCustomer.value
+                            )
+                        }
+                        composable(route = NavigationGraphBiller.ItemList.name) {
+                            title.value = stringResource(R.string.title_list_items)
+                            ListExitingItems(
+                                viewModel = itemMasterListViewModel,
+                                navigation = {
+                                    if (it == NavigationGraphBiller.Back.name)
+                                        navController.popBackStack()
+                                    else
+                                        navController.navigate(it)
+                                })
                         }
                         composable(route = NavigationGraphBiller.AddCustomer.name) {
                             title.value = stringResource(R.string.title_add_cutomer)
                             addCustomerDetails(
                                 customerViewModel = customerViewModel,
                                 navigation = {
-                                    navController.popBackStack()
+                                    if (it == NavigationGraphBiller.Back.name)
+                                        navController.popBackStack()
+                                    else navController.navigate(it)
                                 })
+                        }
+                        composable(route = NavigationGraphBiller.EditCustomer.name) {
+                            title.value = stringResource(R.string.title_edit_cutomer)
+                            val selectedCustomer =
+                                customerViewModel.selectedCustomerForEdit.collectAsState()
+                            addCustomerDetails(
+                                customerViewModel = customerViewModel,
+                                navigation = {
+                                    if (it == NavigationGraphBiller.Back.name)
+                                        navController.popBackStack()
+                                    else navController.navigate(it)
+                                }, customer = selectedCustomer.value
+                            )
+                        }
+                        composable(route = NavigationGraphBiller.CustomerList.name) {
+                            title.value = stringResource(R.string.title_list_customer)
+                            ListExitingCustomer(
+                                customerViewModel = customerViewModel,
+                                navigation = {
+                                    navController.navigate(it)
+                                })
+
                         }
                         composable(route = NavigationGraphBiller.StartInvoice.name) {
                             title.value = stringResource(R.string.title_invoice)
@@ -105,22 +179,15 @@ class MainActivity : ComponentActivity() {
                                     navController.popBackStack()
                                 })
                         }
-
-                        /*composable(route = NavigationGraphBiller.CustomerList.name) {
-                            title.value = stringResource(R.string.title_addCustomer)
-                            val listItem by customerViewModel.customerListUiState.collectAsState()
-                            loadCustomerList(
-                                customerViewModel = customerViewModel,
-                                list = listItem,
-                                navigate = { it ->
-                                    navController.navigate(it)
-                                })
-
-                        }*/
                     }
                 }
             }
         }
+    }
+
+    private fun navigateToScreen(it: String, navController: NavHostController) {
+        if (it == NavigationGraphBiller.Back.name) navController.popBackStack()
+        else navController.navigate(it)
     }
 }
 

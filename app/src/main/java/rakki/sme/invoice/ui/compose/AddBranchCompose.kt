@@ -10,14 +10,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import rakki.sme.invoice.R
+import rakki.sme.invoice.data.NavigationGraphBiller
 import rakki.sme.invoice.data.model.Profile
 import rakki.sme.invoice.extension.filterNull
 import rakki.sme.invoice.ui.component.PlainInputText
@@ -27,36 +30,37 @@ import rakki.sme.invoice.viewmodel.BranchViewModel
 fun addBranchDetailsDialog(
     viewModel: BranchViewModel,
     modifier: Modifier = Modifier,
-    onAdded: () -> Unit
+    navigation: (String) -> Unit,
+    item: Profile? = null
 ) {
     val companyName = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.companyName ?: "")
     }
     val address = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.address ?: "")
     }
     val email = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.email ?: "")
     }
     val phone = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.phoneNumber ?: "")
     }
     val gst = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.gst ?: "")
     }
     val bank = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.bankName ?: "")
     }
     val accountNumber = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.accountNumber ?: "")
     }
 
     val ifsc = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(item?.ifscCode ?: "")
     }
     val result = viewModel.result.collectAsState()
     if (result.value.resultCode == 200) {
-        onAdded.invoke()
+        navigation.invoke(NavigationGraphBiller.Back.name)
         viewModel.clearResultData()
     }
 
@@ -136,7 +140,11 @@ fun addBranchDetailsDialog(
                             bankName = bank.value.filterNull(),
                             accountNumber = accountNumber.value.filterNull(),
                             ifscCode = ifsc.value.filterNull()
-                        )
+                        ).apply {
+                            if (item != null) {
+                                customerProfileId = item.customerProfileId
+                            }
+                        }
                     )
                 }, modifier = Modifier
                     .fillMaxWidth()
@@ -145,5 +153,14 @@ fun addBranchDetailsDialog(
                 Text(stringResource(R.string.button_save))
             }
         }
+        TextButton(
+            onClick = { navigation.invoke(NavigationGraphBiller.BranchList.name) },
+            modifier = Modifier.align(
+                Alignment.CenterHorizontally
+            )
+        ) {
+            Text(text = stringResource(R.string.label_edit_existing_branch))
+        }
+
     }
 }

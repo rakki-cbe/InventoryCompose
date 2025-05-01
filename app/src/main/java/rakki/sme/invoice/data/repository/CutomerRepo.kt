@@ -10,6 +10,13 @@ class CutomerRepo @Inject constructor( private val customerDao: CustomerDao) {
     }
 
     fun saveCustomerData(customer: Customer){
-        customerDao.insertAll(customer)
+        if (customer.custId > 0)
+            customerDao.update(customer)
+        else
+            customerDao.insertAll(customer)
+    }
+
+    fun deleteRecord(customer: Customer) {
+        customerDao.delete(customer)
     }
 }

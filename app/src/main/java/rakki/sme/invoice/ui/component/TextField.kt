@@ -3,26 +3,31 @@ package rakki.sme.invoice.ui.component
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.core.text.isDigitsOnly
 import rakki.sme.invoice.R
 import rakki.sme.invoice.extension.convertToDouble
 import rakki.sme.invoice.extension.isValidAmountDigitOrEmpty
 
+
 @Composable
 fun PlainInputText(
     label: Int, itemValue: MutableState<String>,
     modifier: Modifier = Modifier, data: InputTextValidation = InputTextValidation()
 ) {
-
+    val localFocusManager = LocalFocusManager.current
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,7 +40,13 @@ fun PlainInputText(
             )
         }, onValueChange = { it ->
             itemValue.value = it
-        }, modifier = Modifier.fillMaxWidth())
+        }, modifier = Modifier.fillMaxWidth(),
+            maxLines = 1,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = KeyboardActions(onNext = {
+                localFocusManager.moveFocus(FocusDirection.Next)
+            })
+        )
     }
 }
 
@@ -45,7 +56,7 @@ fun NumbersInputText(
     modifier: Modifier = Modifier,
     data: InputTextValidation = InputTextValidation()
 ) {
-
+    val localFocusManager = LocalFocusManager.current
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -61,8 +72,13 @@ fun NumbersInputText(
                 if (checkTextIsValid(it, data, { it.isDigitsOnly() }))
                 itemValue.value = it
         }, keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.NumberPassword
-        ), modifier = Modifier.fillMaxWidth()
+                keyboardType = KeyboardType.NumberPassword,
+                imeAction = ImeAction.Next
+            ), modifier = Modifier.fillMaxWidth(),
+            maxLines = 1,
+            keyboardActions = KeyboardActions(onNext = {
+                localFocusManager.moveFocus(FocusDirection.Next)
+            })
         )
     }
 }
@@ -73,7 +89,7 @@ fun AmountInputText(
     modifier: Modifier = Modifier,
     data: InputTextValidation = InputTextValidation()
 ) {
-
+    val localFocusManager = LocalFocusManager.current
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -89,8 +105,13 @@ fun AmountInputText(
                 if (checkTextIsValid(it, data, { it.isValidAmountDigitOrEmpty() }))
                 itemValue.value = it
         }, keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Decimal
-        ), modifier = Modifier.fillMaxWidth()
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Next
+            ), modifier = Modifier.fillMaxWidth(),
+            maxLines = 1,
+            keyboardActions = KeyboardActions(onNext = {
+                localFocusManager.moveFocus(FocusDirection.Next)
+            })
         )
     }
 }

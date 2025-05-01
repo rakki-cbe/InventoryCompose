@@ -18,6 +18,11 @@ class ItemMasterEntryRepo @Inject constructor(private val itemMasterEntryDao: It
         if (sgst > 0) totalGst += sgst
         if (igst > 0) totalGst += igst
         item.totalGst = totalGst.toString()
-        itemMasterEntryDao.insertAll(item)
+        if (item.itemId > 0) itemMasterEntryDao.updatedItem(item)
+        else itemMasterEntryDao.insertAll(item)
+    }
+
+    fun deleteItem(item: ItemsMasterEntry) {
+        itemMasterEntryDao.delete(item)
     }
 }

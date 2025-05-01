@@ -23,7 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import rakki.sme.invoice.R
 import rakki.sme.invoice.ui.MainActivity
-import rakki.sme.invoice.ui.compose.CustomToolbarScreen
+import rakki.sme.invoice.ui.component.CustomToolbarScreen
 import rakki.sme.invoice.ui.theme.PdfGeneratorTheme
 import rakki.sme.invoice.viewmodel.UserCredentialsViewModel
 

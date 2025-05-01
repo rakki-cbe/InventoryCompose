@@ -1,4 +1,4 @@
-package rakki.sme.invoice.ui.compose
+package rakki.sme.invoice.ui.component
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

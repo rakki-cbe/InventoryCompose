@@ -14,6 +14,7 @@ import rakki.sme.invoice.data.repository.ItemMasterEntryRepo
 import rakki.sme.invoice.data.usecase.BranchAddUseCase
 import rakki.sme.invoice.data.usecase.BranchGetUseCase
 import rakki.sme.invoice.data.usecase.CustomerAddUseCase
+import rakki.sme.invoice.data.usecase.CustomerDeleteUseCase
 import rakki.sme.invoice.data.usecase.CustomerGetUseCase
 import rakki.sme.invoice.data.usecase.InvoiceAddUseCase
 import rakki.sme.invoice.data.usecase.ItemMasterAddUseCase
@@ -27,6 +28,10 @@ object UsecaseModule {
     @Provides
     fun customerSaveUseCase(customerRepo: CutomerRepo): CustomerAddUseCase =
         CustomerAddUseCase(customerRepo)
+
+    @Provides
+    fun customerDeleteUseCase(customerRepo: CutomerRepo): CustomerDeleteUseCase =
+        CustomerDeleteUseCase(customerRepo)
 
     @Provides
     fun getCustomerUseCase(customerRepo: CutomerRepo): CustomerGetUseCase =

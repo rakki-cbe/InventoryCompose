@@ -18,6 +18,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:theme="@style/Theme.PdfGenerator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import rakki.sme.invoice.data.model.Profile
 
 @Dao
@@ -22,4 +23,7 @@ interface BranchDao {
 
     @Delete
     fun delete(branches: Profile)
+
+    @Update
+    fun updateBranch(profile: Profile)
 }

@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import rakki.sme.invoice.R
+import rakki.sme.invoice.data.NavigationGraphBiller
 import rakki.sme.invoice.data.model.Customer
 import rakki.sme.invoice.extension.filterNull
 import rakki.sme.invoice.ui.component.PlainInputText
@@ -24,7 +27,9 @@ import rakki.sme.invoice.viewmodel.CustomerViewModel
 @Composable
 fun addCustomerDetails(
     customerViewModel: CustomerViewModel,
-    modifier: Modifier = Modifier, navigation: () -> Unit
+    modifier: Modifier = Modifier,
+    navigation: (String) -> Unit,
+    customer: Customer? = null
 ) {
     Column(
         modifier = Modifier
@@ -32,20 +37,21 @@ fun addCustomerDetails(
             .padding(dimensionResource(R.dimen.padding_medium))
     ) {
         val companyNameUi = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(customer?.companyName ?: "")
         }
         val addressStateUi = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(customer?.address ?: "")
         }
         val phoneNumberStateUi = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(customer?.phoneNumber ?: "")
         }
         val gstStateUi = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(customer?.gst ?: "")
         }
         val result = customerViewModel.result.collectAsState()
         if (result.value.resultCode == 200) {
-            navigation.invoke()
+            navigation.invoke(NavigationGraphBiller.Back.name)
+            customerViewModel.clearResultData()
         }
         PlainInputText(
             label = R.string.label_company_name,
@@ -73,15 +79,25 @@ fun addCustomerDetails(
         ) {
             FilledTonalButton(
                 onClick = {
-                    companyNameUi.value = ""
-                    addressStateUi.value = ""
-                    phoneNumberStateUi.value = ""
-                    gstStateUi.value = ""
+                    if (customer == null) {
+                        companyNameUi.value = ""
+                        addressStateUi.value = ""
+                        phoneNumberStateUi.value = ""
+                        gstStateUi.value = ""
+                    } else {
+                        navigation.invoke(NavigationGraphBiller.Back.name)
+                    }
                 }, modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Text(stringResource(R.string.button_clear))
+                Text(
+                    text =
+                        stringResource(
+                            if (customer == null) R.string.button_clear
+                            else R.string.button_cancel
+                        )
+                )
             }
             Button(onClick = {
                 customerViewModel
@@ -91,7 +107,10 @@ fun addCustomerDetails(
                             address = addressStateUi.value.filterNull(),
                             phoneNumber = phoneNumberStateUi.value.filterNull(),
                             gst = gstStateUi.value.filterNull()
-                        )
+                        ).apply {
+                            if (customer != null)
+                                custId = customer.custId
+                        }
                     )
             }, modifier = Modifier
                 .fillMaxWidth()
@@ -100,6 +119,11 @@ fun addCustomerDetails(
                 Text(stringResource(R.string.button_save))
             }
         }
-
+        TextButton(
+            onClick = { navigation.invoke(NavigationGraphBiller.CustomerList.name) },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Text(text = stringResource(R.string.label_edit_existing_customer))
+        }
     }
 }

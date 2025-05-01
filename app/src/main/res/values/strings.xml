@@ -5,10 +5,17 @@
     <string name="title_add_branch">Add your branch</string>
     <string name="title_add_item">Add item to master list</string>
     <string name="title_add_cutomer">Add your customer</string>
+    <string name="title_edit_cutomer">Edit your customer</string>
+    <string name="title_edit_item">Edit your item</string>
+    <string name="title_edit_branch">Edit your branch</string>
     <string name="title_addCustomer">Please enter customer details</string>
     <string name="title_invoice">Please add your items</string>
     <string name="title_Login">Login</string>
     <string name="title_create_user">Create User</string>
+    <string name="title_list_customer">Edit or delete customer</string>
+    <string name="title_list_items">Edit or delete items</string>
+    <string name="title_list_branch">Edit or delete branch</string>
+    <string name="title_confirm">Please Confirm</string>
     <string name="label_company_name">Company Name</string>
     <string name="label_address">Address</string>
     <string name="label_phone_number">Phone Number</string>
@@ -39,6 +46,17 @@
     <string name="label_user_password">Password</string>
     <string name="label_select_customer">Company name</string>
     <string name="label_select_item">Item</string>
+    <string name="label_edit_existing_customer">Edit Existing Customer</string>
+    <string name="label_no_data_available">No data available pelase add new item </string>
+    <string name="label_edit">Edit</string>
+    <string name="label_delete">Delete</string>
+    <string name="lable_confirm">Confirm</string>
+    <string name="lable_cancel">Cancel</string>
+    <string name="label_confirm_delete">You cannot recover this data its will be permanently deleted.
+        \nAre you sure, you want to delete this item?
+    </string>
+    <string name="label_edit_existing_item">Edit Existing Item</string>
+    <string name="label_edit_existing_branch">Edit Existing Branch</string>
 
     <string name="button_clear">Clear</string>
     <string name="button_save">Save</string>
@@ -49,5 +67,6 @@
     <string name="button_add_new_item">Add new item</string>
     <string name="button_add_new_branch">Add new branch</string>
     <string name="button_login">Login</string>
+    <string name="button_cancel">Cancel</string>
 
 </resources>

@@ -10,14 +10,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import rakki.sme.invoice.R
+import rakki.sme.invoice.data.NavigationGraphBiller
 import rakki.sme.invoice.data.model.ItemsMasterEntry
 import rakki.sme.invoice.extension.clear
 import rakki.sme.invoice.extension.convertNullOrEmpty
@@ -31,7 +34,8 @@ import rakki.sme.invoice.viewmodel.ItemMasterListViewModel
 fun addItemMasterData(
     viewModel: ItemMasterListViewModel,
     modifier: Modifier = Modifier,
-    navigation: () -> Unit
+    navigation: (String) -> Unit,
+    item: ItemsMasterEntry? = null
 ) {
     Column(
         modifier = Modifier
@@ -40,26 +44,26 @@ fun addItemMasterData(
             .verticalScroll(rememberScrollState())
     ) {
         val name = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(item?.itemName ?: "")
         }
         val code = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(item?.itemCode ?: "")
         }
         val des = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(item?.desc ?: "")
         }
         val sgst = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(item?.sgst ?: "")
         }
         val cgst = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(item?.cgst ?: "")
         }
         val igst = rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(item?.igst ?: "")
         }
         val result = viewModel.result.collectAsState()
         if (result.value.resultCode == 200) {
-            navigation.invoke()
+            navigation.invoke(NavigationGraphBiller.Back.name)
             viewModel.clearResultData()
         }
         PlainInputText(
@@ -126,13 +130,24 @@ fun addItemMasterData(
                                 this.sgst = sgst.value.convertNullOrEmpty("0.0")
                                 this.cgst = cgst.value.convertNullOrEmpty("0.0")
                                 this.igst = igst.value.convertNullOrEmpty("0.0")
+                                if (item != null)
+                                    itemId = item.itemId
                             })
+
                 }, modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
             ) {
                 Text(stringResource(R.string.button_save))
             }
+        }
+        TextButton(
+            onClick = { navigation.invoke(NavigationGraphBiller.ItemList.name) },
+            modifier = Modifier.align(
+                Alignment.CenterHorizontally
+            )
+        ) {
+            Text(text = stringResource(R.string.label_edit_existing_item))
         }
 
     }

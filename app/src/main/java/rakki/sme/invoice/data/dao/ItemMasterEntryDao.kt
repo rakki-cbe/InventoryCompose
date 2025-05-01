@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import rakki.sme.invoice.data.model.ItemsMasterEntry
 
 @Dao
@@ -22,4 +23,7 @@ interface ItemMasterEntryDao {
 
     @Delete
     fun delete(itemsMasterEntry: ItemsMasterEntry)
+
+    @Update
+    fun updatedItem(itemsMasterEntry: ItemsMasterEntry)
 }
