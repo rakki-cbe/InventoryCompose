@@ -17,28 +17,30 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.FileProvider
 import rakki.sme.invoice.R
-import rakki.sme.invoice.data.DefaultSelectedItem
 import rakki.sme.invoice.domain.InventoryDomainData
 import rakki.sme.invoice.extension.convertNullOrEmpty
 import rakki.sme.invoice.ui.component.AmountInputText
 import rakki.sme.invoice.ui.component.DropDown
-import rakki.sme.invoice.ui.component.DropDownUiData
 import rakki.sme.invoice.ui.component.InputTextValidation
 import rakki.sme.invoice.ui.component.NumbersInputText
+import rakki.sme.invoice.ui.component.showErrorAlert
 import rakki.sme.invoice.viewmodel.CreateInvoiceViewModel
 import java.io.File
 
@@ -55,21 +57,9 @@ fun createInvoice(
             .padding(dimensionResource(R.dimen.padding_medium))
             .verticalScroll(rememberScrollState())
     ) {
-        val clearAllUiData = rememberSaveable {
-            mutableStateOf<Boolean>(false)
-        }
-        val selectedProfile = rememberSaveable {
-            mutableStateOf<Long>(0)
-        }
-        val selectedCustomer = rememberSaveable {
-            mutableStateOf<Long>(0)
-        }
-        val selecteditem = rememberSaveable {
-            mutableStateOf<Long>(0)
-        }
-        val resetToDefault = rememberSaveable {
-            mutableStateOf<Boolean>(false)
-        }
+        val selectedProfile = viewModel.selectedBranchId.collectAsState()
+        val selectedCustomer = viewModel.selectedCustomerId.collectAsState()
+        val selectedItem = viewModel.selectedItemId.collectAsState()
 
         val tempInventoryItem = viewModel.itemTempInvntoryItem.collectAsState()
 
@@ -86,11 +76,18 @@ fun createInvoice(
         if (result.value.resultCode == 200) {
             result.value.data?.let {
                 moveToGeneratePDF(context, it)
+                viewModel.clearAllSelectedItem()
             }
             navigation.invoke()
             viewModel.clearResultData()
         }
 
+        val errorMessage = viewModel.errorMessage.collectAsState()
+        if (errorMessage.value.isNotEmpty()) {
+            showErrorAlert("", errorMessage.value, {
+                viewModel.resetErrorMessage()
+            })
+        }
         //Branch selection
         val branchList = viewModel.branchListUiState.collectAsState()
         val branchListPair: MutableList<Pair<Long, String>> = mutableListOf(
@@ -102,7 +99,9 @@ fun createInvoice(
         branchList.value.forEach { item ->
             branchListPair.add(Pair(item.customerProfileId, item.companyName))
         }
-        dropDownlistComposeInventroy(branchListPair, clearAllUiData, selectedProfile)
+        dropDownlistComposeInventroy(branchListPair, selectedProfile.value, {
+            viewModel.setSelectedProfile(it)
+        })
         //Customer
         val customerList = viewModel.customerListUiState.collectAsState()
         val customerListPair: MutableList<Pair<Long, String>> = mutableListOf(
@@ -114,7 +113,9 @@ fun createInvoice(
         customerList.value.forEach { item ->
             customerListPair.add(Pair(item.custId, item.companyName))
         }
-        dropDownlistComposeInventroy(customerListPair, clearAllUiData, selectedCustomer)
+        dropDownlistComposeInventroy(customerListPair, selectedCustomer.value, {
+            viewModel.setSelectedCustomer(it)
+        })
         //Item
         val itemslist = viewModel.itemMasterListUiState.collectAsState()
         val itemListPair: MutableList<Pair<Long, String>> = mutableListOf(
@@ -126,7 +127,9 @@ fun createInvoice(
         itemslist.value.forEach { item ->
             itemListPair.add(Pair(item.itemId, item.itemName))
         }
-        dropDownlistComposeInventroy(itemListPair, clearAllUiData, selecteditem)
+        dropDownlistComposeInventroy(itemListPair, selectedItem.value, {
+            viewModel.setSelectedItem(it)
+        })
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -165,10 +168,10 @@ fun createInvoice(
             )
             Button(
                 onClick = {
-                    if (tempInventoryItem.value.size < 6) {
-                        viewModel.addTempInventoryItem(
+                    viewModel.addTempInventoryItem(
+                        context,
                             InventoryDomainData(
-                                item = itemslist.value.filter { it.itemId == selecteditem.value }
+                                item = itemslist.value.filter { it.itemId == selectedItem.value }
                                     .firstOrNull(),
                                 numberOfItem = quantity.value.convertNullOrEmpty("0"),
                                 unitPrice = unitPrice.value.convertNullOrEmpty("0"),
@@ -178,7 +181,6 @@ fun createInvoice(
                         quantity.value = ""
                         unitPrice.value = ""
                         discount.value = ""
-                    }
 
                 }, modifier = Modifier
                     .fillMaxWidth()
@@ -188,7 +190,7 @@ fun createInvoice(
             }
         }
         if (tempInventoryItem.value.isNotEmpty()) {
-            loadInventroyInfo(tempInventoryItem.value, {})
+            loadInventroyInfo(tempInventoryItem.value, { viewModel.deleteTempItem(it) })
         }
         Row(
             modifier = Modifier
@@ -200,7 +202,7 @@ fun createInvoice(
         ) {
             FilledTonalButton(
                 onClick = {
-                    clearAllUiData.value = true
+                    viewModel.clearAllSelectedItem()
                 }, modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -226,7 +228,7 @@ fun createInvoice(
 }
 
 @Composable
-fun loadInventroyInfo(value: List<InventoryDomainData>, function: () -> Unit) {
+fun loadInventroyInfo(value: List<InventoryDomainData>, delete: (InventoryDomainData) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -291,6 +293,13 @@ fun loadInventroyInfo(value: List<InventoryDomainData>, function: () -> Unit) {
                         .fillMaxWidth()
                         .weight(1f)
                 )
+                VerticalDivider(modifier = Modifier.fillMaxHeight())
+                Text(
+                    stringResource(R.string.label_edit),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
 
             }
 
@@ -300,6 +309,7 @@ fun loadInventroyInfo(value: List<InventoryDomainData>, function: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(dimensionResource(R.dimen.card_height_xxs)),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
                 ) {
                     VerticalDivider(modifier = Modifier.fillMaxHeight())
@@ -347,6 +357,15 @@ fun loadInventroyInfo(value: List<InventoryDomainData>, function: () -> Unit) {
                             .fillMaxWidth()
                             .weight(1f)
                     )
+                    VerticalDivider(modifier = Modifier.fillMaxHeight())
+                    IconButton(onClick = {
+                        delete.invoke(it)
+                    }) {
+                        Icon(
+                            painterResource(R.drawable.ic_delete),
+                            stringResource(R.string.label_delete)
+                        )
+                    }
                 }
                 HorizontalDivider(modifier = Modifier.fillMaxWidth())
             }
@@ -357,25 +376,11 @@ fun loadInventroyInfo(value: List<InventoryDomainData>, function: () -> Unit) {
 @Composable
 fun dropDownlistComposeInventroy(
     listUiState: List<Pair<Long, String>>,
-    resetSelection: MutableState<Boolean>,
-    selectedId: MutableState<Long>
+    selectedId: Long,
+    onItemSelected: (Long) -> Unit
 ) {
     Row(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
-        val dropDownUi = DropDownUiData(listUiState, { it ->
-            when (it.first) {
-                DefaultSelectedItem -> {
-                    //Do nothing its just label
-                }
-
-                else -> {
-                    selectedId.value = it.first
-                    resetSelection.value = false
-                }
-            }
-        })
-        dropDownUi.ignoreFirst = true
-        dropDownUi.ignorelast = false
-        DropDown(dropDownUi, resetSelection.value)
+        DropDown(listUiState, { onItemSelected(it.first) }, selectedId)
     }
 }
 

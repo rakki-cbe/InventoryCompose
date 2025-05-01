@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import rakki.sme.invoice.R
 import rakki.sme.invoice.data.RESUTLT_USECASE_SUCCESS
 import rakki.sme.invoice.data.model.Customer
 import rakki.sme.invoice.data.model.Inventory
@@ -23,6 +24,8 @@ import rakki.sme.invoice.extension.convertToDouble
 import rakki.sme.invoice.extension.convertToInt
 import rakki.sme.invoice.ui.Response
 import rakki.sme.invoice.ui.pdfgenerator.createPDF
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -48,9 +51,21 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
     val itemTempInvntoryItem: StateFlow<List<InventoryDomainData>> =
         _itemTempInvntoryItem.asStateFlow()
 
+    private val _selectedBranchId = MutableStateFlow<Long>(0)
+    val selectedBranchId: StateFlow<Long> = _selectedBranchId.asStateFlow()
+
+    private val _selectedCustomerId = MutableStateFlow<Long>(0)
+    val selectedCustomerId: StateFlow<Long> = _selectedCustomerId.asStateFlow()
+
+    private val _selectedItemId = MutableStateFlow<Long>(0)
+    val selectedItemId: StateFlow<Long> = _selectedItemId.asStateFlow()
+
 
     private val _result = MutableStateFlow(Response<String>())
     val result = _result.asStateFlow()
+
+    private val _errorMessage = MutableStateFlow("")
+    val errorMessage = _errorMessage.asStateFlow()
 
     fun getAllBranch() {
         viewModelScope.launch {
@@ -80,24 +95,32 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
         customerId: Long,
         context: Context
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val list: List<ItemsInventory> = inventoryDomain.getInventoryDbData()
-            val totalAmount = inventoryDomain.getTotalAmount()
-            val totalDiscount = 0
-            val totalPaidAmount = totalAmount - totalDiscount
-            val date = getCurrentDateAndTime()
+        if (profileId <= 0) {
+            _errorMessage.value = context.getString(R.string.error_selected_branch)
+        } else if (customerId <= 0) {
+            _errorMessage.value = context.getString(R.string.error_selected_customer)
+        } else if (inventoryDomain.isEmpty())
+            _errorMessage.value = context.getString(R.string.error_add_inventory_info)
+        else {
+            viewModelScope.launch(Dispatchers.IO) {
+                val list: List<ItemsInventory> = inventoryDomain.getInventoryDbData()
+                val totalAmount = inventoryDomain.getTotalAmount()
+                val totalDiscount = 0
+                val totalPaidAmount = totalAmount - totalDiscount
+                val date = getCurrentDateAndTime()
 
-            val id = invoiceAddUseCase.saveInventroy(
-                Inventory(
-                    customerId, profileId, totalAmount.toString(),
-                    totalDiscount.toString(), totalPaidAmount.toString(), date
-                ), list
-            )
-            id.let {
-                val filePath = createPDFForInvoice(context, id)
-                _result.value = Response<String>().apply {
-                    this.data = filePath
-                    this.resultCode = RESUTLT_USECASE_SUCCESS
+                val id = invoiceAddUseCase.saveInventroy(
+                    Inventory(
+                        customerId, profileId, totalAmount.toString(),
+                        totalDiscount.toString(), totalPaidAmount.toString(), date
+                    ), list
+                )
+                id.let {
+                    val filePath = createPDFForInvoice(context, id)
+                    _result.value = Response<String>().apply {
+                        this.data = filePath
+                        this.resultCode = RESUTLT_USECASE_SUCCESS
+                    }
                 }
             }
         }
@@ -110,16 +133,32 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
         return createPDF(context, data, lineItem)
     }
 
-    fun addTempInventoryItem(item: InventoryDomainData) {
-        val list: MutableList<InventoryDomainData> = mutableListOf()
-        list.addAll(itemTempInvntoryItem.value)
-        item.totalGstPerecent = item.item?.totalGst.convertToDouble(0.0)
-        item.totalAmountWithoutGst = calculateTotalAmount(item)
-        item.totalGstAmount =
-            calculateTotalGstAmount(item.totalGstPerecent, item.totalAmountWithoutGst)
-        item.totalAmountWithGstPrice = (item.totalAmountWithoutGst + item.totalGstAmount).toString()
-        list.add(item)
-        _itemTempInvntoryItem.value = list.toList()
+    fun addTempInventoryItem(context: Context, item: InventoryDomainData) {
+        if (checkIsValidInput(context, item, itemTempInvntoryItem)) {
+            val list: MutableList<InventoryDomainData> = mutableListOf()
+            list.addAll(itemTempInvntoryItem.value)
+            item.totalGstPerecent = item.item?.totalGst.convertToDouble(0.0)
+            item.totalAmountWithoutGst = calculateTotalAmount(item)
+            item.totalGstAmount =
+                calculateTotalGstAmount(item.totalGstPerecent, item.totalAmountWithoutGst)
+            item.totalAmountWithGstPrice =
+                (item.totalAmountWithoutGst + item.totalGstAmount).toString()
+            list.add(item)
+            _itemTempInvntoryItem.value = list.toList()
+        }
+    }
+
+    private fun checkIsValidInput(
+        context: Context, item: InventoryDomainData,
+        itemTempInvntoryItem: StateFlow<List<InventoryDomainData>>
+    ): Boolean {
+        return if (itemTempInvntoryItem.value.size >= 6) {
+            _errorMessage.value = context.getString(R.string.error_cannot_add_more)
+            false
+        } else if (item.item == null) {
+            _errorMessage.value = context.getString(R.string.error_product_not_selected)
+            false
+        } else true
     }
 
     private fun calculateTotalGstAmount(
@@ -127,7 +166,8 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
         totalAmount: Double
     ): Double {
         return if (totalGstPercent > 0)
-            return ((totalGstPercent / 100) * totalAmount)
+            return BigDecimal(((totalGstPercent / 100) * totalAmount))
+                .setScale(2, RoundingMode.HALF_EVEN).toDouble()
         else 0.0
     }
 
@@ -145,5 +185,35 @@ class CreateInvoiceViewModel @Inject constructor(private val invoiceAddUseCase: 
         val formattedDate: String = simpleDateFormat.format(c)
         return formattedDate
     }
+
+    fun resetErrorMessage() {
+        _errorMessage.value = ""
+    }
+
+    fun setSelectedProfile(it: Long) {
+        _selectedBranchId.value = it
+    }
+
+    fun setSelectedCustomer(it: Long) {
+        _selectedCustomerId.value = it
+    }
+
+    fun setSelectedItem(it: Long) {
+        _selectedItemId.value = it
+    }
+
+    fun clearAllSelectedItem() {
+        _selectedBranchId.value = 0
+        _selectedCustomerId.value = 0
+        _selectedItemId.value = 0
+        _itemTempInvntoryItem.value = listOf()
+
+    }
+
+    fun deleteTempItem(item: InventoryDomainData) {
+        _itemTempInvntoryItem.value = _itemTempInvntoryItem.value.filterNot { it == item }
+    }
+
+
 }
 

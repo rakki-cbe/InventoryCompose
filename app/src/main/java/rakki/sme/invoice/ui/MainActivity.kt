@@ -170,6 +170,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = NavigationGraphBiller.StartInvoice.name) {
                             title.value = stringResource(R.string.title_invoice)
+                            createInvoiceViewModel.clearAllSelectedItem()
                             createInvoiceViewModel.getAllBranch()
                             createInvoiceViewModel.getCustomer()
                             createInvoiceViewModel.getItem()

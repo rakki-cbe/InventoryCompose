@@ -68,5 +68,12 @@
     <string name="button_add_new_branch">Add new branch</string>
     <string name="button_login">Login</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_ok">Ok</string>
+
+    <string name="error_selected_branch">Please select branch</string>
+    <string name="error_selected_customer">Please select customer</string>
+    <string name="error_add_inventory_info">Please add one or more iteme to generate invoice</string>
+    <string name="error_cannot_add_more">You cannot add any more item with this invoice, Please use new invoice for other items</string>
+    <string name="error_product_not_selected">Please select your product for invoice</string>
 
 </resources>
